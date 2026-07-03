@@ -50,9 +50,14 @@ async function sendEnquiryMessage(payload) {
   if (!client) {
     return { error: { message: "Database connection unavailable. Please refresh and try again." } };
   }
-  const { data, error } = await client.from("enquiries").insert([payload]).select();
+  // No .select() here on purpose: the anon role is only granted INSERT on
+  // this table, not SELECT. Chaining .select() makes PostgREST try to read
+  // the row back after inserting it, which RLS blocks for anon — and that
+  // gets reported as a false "row violates row-level security policy" error
+  // even though the insert itself succeeded.
+  const { error } = await client.from("enquiries").insert([payload]);
   if (error) console.error("[Supabase] sendEnquiryMessage error:", error);
-  return { data, error };
+  return { error };
 }
 
 async function sendBookingRequest(payload) {
@@ -60,9 +65,10 @@ async function sendBookingRequest(payload) {
   if (!client) {
     return { error: { message: "Database connection unavailable. Please refresh and try again." } };
   }
-  const { data, error } = await client.from("bookings").insert([payload]).select();
+  // Same reasoning as sendEnquiryMessage — no .select() after insert.
+  const { error } = await client.from("bookings").insert([payload]);
   if (error) console.error("[Supabase] sendBookingRequest error:", error);
-  return { data, error };
+  return { error };
 }
 
 window.nySupabase = {
