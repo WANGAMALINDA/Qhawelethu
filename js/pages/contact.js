@@ -136,11 +136,29 @@ function wireContactPage(root) {
 
     // also send to local server (doesn't require third-party)
     try {
-      await fetch('/local-submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'enquiry', payload }),
-      });
+      const localSubmissionTargets = ['/local-submit', 'http://localhost:4000/local-submit'];
+      let localSubmissionSucceeded = false;
+
+      for (const target of localSubmissionTargets) {
+        try {
+          const response = await fetch(target, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type: 'enquiry', payload }),
+          });
+
+          if (response.ok || response.status === 404 || response.status === 405) {
+            localSubmissionSucceeded = response.ok;
+            if (response.ok) break;
+          }
+        } catch (err) {
+          // Ignore and try the next target if the local backend is unavailable.
+        }
+      }
+
+      if (!localSubmissionSucceeded) {
+        console.info('Local submission skipped because no reachable backend was available.');
+      }
     } catch (err) {
       console.warn('Local submit failed', err);
     }
