@@ -1,7 +1,17 @@
 const SUPABASE_URL = "https://guerbgchojefhgljyake.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_42zYBuYrbTwDxTVm_1TvaA_uaId6Bi1";
 
-const supabaseClient = typeof supabase !== "undefined" ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+// Read the anon key from a runtime-injected meta tag or a window variable.
+// This keeps the publishable key out of source control. Deployers should inject
+// the key into the HTML (see README_SUPABASE_ENV.md).
+const SUPABASE_ANON_KEY =
+  (typeof document !== 'undefined' && document.querySelector("meta[name=\"supabase-key\"]")?.getAttribute('content')) ||
+  (typeof window !== 'undefined' && window.__SUPABASE_ANON_KEY) ||
+  null;
+
+const supabaseClient =
+  typeof supabase !== 'undefined' && SUPABASE_ANON_KEY
+    ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    : null;
 
 function sendEnquiryMessage(payload) {
   if (!supabaseClient) {
