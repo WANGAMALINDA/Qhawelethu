@@ -97,14 +97,45 @@ function renderContactPage() {
 function wireContactPage(root) {
   const form = root.querySelector("#qw-contact-form");
   if (!form) return;
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(form).entries());
-    console.log("Inquiry submitted:", data);
+    const payload = {
+      name: data.name?.trim(),
+      email: data.email?.trim(),
+      message: data.message?.trim(),
+      created_at: new Date().toISOString(),
+    };
+
     const btn = form.querySelector('button[type="submit"]');
     const original = btn.innerHTML;
+    btn.disabled = true;
+
+    if (!payload.name || !payload.email || !payload.message) {
+      btn.innerHTML = "Complete all fields";
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = original;
+      }, 2200);
+      return;
+    }
+
+    btn.innerHTML = "Sending...";
+    const result = await window.nySupabase?.sendEnquiryMessage(payload);
+
+    if (result?.error) {
+      console.error("Inquiry save failed:", result.error);
+      btn.innerHTML = "Try again";
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = original;
+      }, 2200);
+      return;
+    }
+
     btn.innerHTML = "Sent ✓";
     setTimeout(() => {
+      btn.disabled = false;
       btn.innerHTML = original;
       form.reset();
     }, 1800);

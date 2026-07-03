@@ -100,11 +100,11 @@ function renderBookingPage() {
 
               <div class="qw-details-label">Your details</div>
               <div class="qw-form-grid">
-                <input class="qw-input" placeholder="Full name" />
-                <input class="qw-input" placeholder="Phone number" />
+                <input id="qw-booking-name" class="qw-input" placeholder="Full name" />
+                <input id="qw-booking-phone" class="qw-input" placeholder="Phone number" />
               </div>
-              <input class="qw-input" placeholder="Email address" style="width:100%; margin-bottom:0.75rem;" />
-              <textarea class="qw-textarea" placeholder="Briefly describe what brings you in" rows="3" style="width:100%; margin-bottom:1rem;"></textarea>
+              <input id="qw-booking-email" class="qw-input" placeholder="Email address" style="width:100%; margin-bottom:0.75rem;" />
+              <textarea id="qw-booking-note" class="qw-textarea" placeholder="Briefly describe what brings you in" rows="3" style="width:100%; margin-bottom:1rem;"></textarea>
               <button class="qw-btn-primary" id="qw-confirm-booking" style="padding:0.75rem 1.75rem; font-size:14px;">
                 Confirm Booking
               </button>
@@ -237,13 +237,62 @@ function wireBookingPage(root) {
   }
 
   if (confirmBtn) {
-    confirmBtn.addEventListener("click", () => {
+    confirmBtn.addEventListener("click", async () => {
       const original = confirmBtn.innerHTML;
-      confirmBtn.innerHTML = "Booked ✓";
+      const nameInput = root.querySelector("#qw-booking-name");
+      const phoneInput = root.querySelector("#qw-booking-phone");
+      const emailInput = root.querySelector("#qw-booking-email");
+      const noteInput = root.querySelector("#qw-booking-note");
+
+      const fullName = nameInput?.value.trim();
+      const phone = phoneInput?.value.trim();
+      const email = emailInput?.value.trim();
+      const note = noteInput?.value.trim();
+
+      if (!fullName || !email) {
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = "Name & email required";
+        setTimeout(() => {
+          confirmBtn.disabled = false;
+          confirmBtn.innerHTML = original;
+        }, 2200);
+        return;
+      }
+
       confirmBtn.disabled = true;
+      confirmBtn.innerHTML = "Booking...";
+
+      const payload = {
+        service: bookingState.selectedService,
+        booking_date: `2027-01-${String(bookingState.selectedDay).padStart(2, "0")}`,
+        time_slot: bookingState.selectedSlot,
+        full_name: fullName,
+        phone,
+        email,
+        note,
+        created_at: new Date().toISOString(),
+      };
+
+      const result = await window.nySupabase?.sendBookingRequest(payload);
+      if (result?.error) {
+        console.error("Booking save failed:", result.error, result);
+        const message = result.error?.message || "Unable to save booking";
+        confirmBtn.innerHTML = message.length < 32 ? message : "Try again";
+        setTimeout(() => {
+          confirmBtn.disabled = false;
+          confirmBtn.innerHTML = original;
+        }, 2200);
+        return;
+      }
+
+      confirmBtn.innerHTML = "Booked ✓";
       setTimeout(() => {
-        confirmBtn.innerHTML = original;
         confirmBtn.disabled = false;
+        confirmBtn.innerHTML = original;
+        if (nameInput) nameInput.value = "";
+        if (phoneInput) phoneInput.value = "";
+        if (emailInput) emailInput.value = "";
+        if (noteInput) noteInput.value = "";
       }, 1800);
     });
   }
