@@ -1,22 +1,17 @@
 // js/supabase.js
 const SUPABASE_URL = "https://guerbgchojefhgljyake.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_42zYBuYrbTwDxTVm_1TvaA_uaId6Bi1";
 
-// Wait for Supabase to load before creating the client
-const supabaseClient = (() => {
-  if (typeof supabase !== "undefined" && supabase.createClient) {
-    return supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  }
-  return null;
-})();
+// Read the anon key from a runtime-injected meta tag or window variable.
+// Fallback to hard-coded value for local dev only.
+const SUPABASE_ANON_KEY =
+  (typeof document !== 'undefined' && document.querySelector("meta[name=\"supabase-key\"]")?.getAttribute('content')) ||
+  (typeof window !== 'undefined' && window.__SUPABASE_ANON_KEY) ||
+  "sb_publishable_42zYBuYrbTwDxTVm_1TvaA_uaId6Bi1";
 
-// Add a loader that retries client creation if it failed initially
+const supabaseClient = typeof supabase !== "undefined" ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
 function ensureSupabaseClient() {
-  if (supabaseClient) return supabaseClient;
-  if (typeof supabase !== "undefined" && supabase.createClient) {
-    return supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  }
-  return null;
+  return supabaseClient;
 }
 
 function sendEnquiryMessage(payload) {

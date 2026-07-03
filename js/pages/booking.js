@@ -275,7 +275,7 @@ function wireBookingPage(root) {
 
       const result = await window.nySupabase?.sendBookingRequest(payload);
       if (result?.error) {
-        console.error("Booking save failed:", result.error, result);
+        console.error("Booking save failed:", JSON.stringify(result.error, null, 2), result);
         const message = result.error?.message || "Unable to save booking";
         confirmBtn.innerHTML = message.length < 32 ? message : "Try again";
         setTimeout(() => {
@@ -285,6 +285,18 @@ function wireBookingPage(root) {
         return;
       }
 
+      // also log to local server if present
+      try {
+        await fetch('/local-submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'booking', payload }),
+        });
+      } catch (err) {
+        console.warn('Local submit failed', err);
+      }
+
+      localStorage.setItem('qw_last_booking_submit', String(Date.now()));
       confirmBtn.innerHTML = "Booked ✓";
       setTimeout(() => {
         confirmBtn.disabled = false;
