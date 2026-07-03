@@ -99,18 +99,6 @@ function wireContactPage(root) {
   if (!form) return;
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const now = Date.now();
-    const last = Number(localStorage.getItem("qw_last_contact_submit") || 0);
-    const THROTTLE_MS = 30 * 1000;
-    const btn = form.querySelector('button[type="submit"]');
-    const original = btn.innerHTML;
-
-    if (now - last < THROTTLE_MS) {
-      btn.innerHTML = "Please wait a moment";
-      setTimeout(() => (btn.innerHTML = original), 1800);
-      return;
-    }
-
     const data = Object.fromEntries(new FormData(form).entries());
     const payload = {
       name: data.name?.trim(),
@@ -119,51 +107,32 @@ function wireContactPage(root) {
       created_at: new Date().toISOString(),
     };
 
+    const btn = form.querySelector('button[type="submit"]');
+    const original = btn.innerHTML;
+    btn.disabled = true;
+
     if (!payload.name || !payload.email || !payload.message) {
       btn.innerHTML = "Complete all fields";
       setTimeout(() => {
+        btn.disabled = false;
         btn.innerHTML = original;
       }, 2200);
       return;
     }
 
-    btn.disabled = true;
     btn.innerHTML = "Sending...";
+    const result = await window.nySupabase?.sendEnquiryMessage(payload);
 
-    // send to Supabase (if configured)
-    const supa = await window.nySupabase?.sendEnquiryMessage(payload);
-    if (supa?.error) console.warn('Supabase save warning', supa.error);
-
-    // also send to local server (doesn't require third-party)
-    try {
-      const localSubmissionTargets = ['/local-submit', 'http://localhost:4000/local-submit'];
-      let localSubmissionSucceeded = false;
-
-      for (const target of localSubmissionTargets) {
-        try {
-          const response = await fetch(target, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ type: 'enquiry', payload }),
-          });
-
-          if (response.ok || response.status === 404 || response.status === 405) {
-            localSubmissionSucceeded = response.ok;
-            if (response.ok) break;
-          }
-        } catch (err) {
-          // Ignore and try the next target if the local backend is unavailable.
-        }
-      }
-
-      if (!localSubmissionSucceeded) {
-        console.info('Local submission skipped because no reachable backend was available.');
-      }
-    } catch (err) {
-      console.warn('Local submit failed', err);
+    if (result?.error) {
+      console.error("Inquiry save failed:", result.error);
+      btn.innerHTML = "Try again";
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = original;
+      }, 2200);
+      return;
     }
 
-    localStorage.setItem('qw_last_contact_submit', String(Date.now()));
     btn.innerHTML = "Sent ✓";
     setTimeout(() => {
       btn.disabled = false;

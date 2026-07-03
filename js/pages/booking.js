@@ -259,15 +259,6 @@ function wireBookingPage(root) {
         return;
       }
 
-      // simple client-side throttling
-      const last = Number(localStorage.getItem('qw_last_booking_submit') || 0);
-      const THROTTLE_MS = 30 * 1000;
-      if (Date.now() - last < THROTTLE_MS) {
-        confirmBtn.innerHTML = 'Please wait a moment';
-        setTimeout(() => (confirmBtn.innerHTML = original), 1800);
-        return;
-      }
-
       confirmBtn.disabled = true;
       confirmBtn.innerHTML = "Booking...";
 
@@ -294,18 +285,6 @@ function wireBookingPage(root) {
         return;
       }
 
-      // also log to local server if present
-      try {
-        await fetch('/local-submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'booking', payload }),
-        });
-      } catch (err) {
-        console.warn('Local submit failed', err);
-      }
-
-      localStorage.setItem('qw_last_booking_submit', String(Date.now()));
       confirmBtn.innerHTML = "Booked ✓";
       setTimeout(() => {
         confirmBtn.disabled = false;
