@@ -74,10 +74,14 @@ function renderContactPage() {
         ${testimonialsCard(CONTACT_TESTIMONIALS)}
 
         <div class="qw-map-card">
-          <div class="qw-map-placeholder">
-            ${Icons.mapPin(22, "var(--moss)")}
-            <span>Map · Benoni, Gauteng</span>
-          </div>
+          <iframe 
+            src="https://www.google.com/maps?q=-26.163311768613674,28.33931743628836&z=15&output=embed" 
+            width="100%" 
+            height="260" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy">
+          </iframe>
           <div class="qw-side-card bordered" style="border-top:none; border-radius:0;">
             <div class="qw-contact-mini">
               <div class="row">${Icons.phone(14, "var(--moss)")} +27 76 829 6508</div>

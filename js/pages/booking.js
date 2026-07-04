@@ -138,7 +138,7 @@ function renderBookingPage() {
           <div class="qw-intake-row">${Icons.shieldCheck(18)} <span>End-to-end encrypted forms</span></div>
           <div class="qw-intake-row">${Icons.fileCheck2(18)} <span>POPIA-compliant records</span></div>
           <div class="qw-intake-row">${Icons.lock(18)} <span>Private, never shared</span></div>
-          <button class="qw-full-btn">Complete Intake Form</button>
+          <button class="qw-full-btn">Complete Intake Form Below</button>
         </div>
 
         ${blogCard(BLOG_POSTS_BOOKING)}
