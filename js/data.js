@@ -4,11 +4,20 @@ const NAV_ITEMS = [
   { id: "home", label: "Home" },
   { id: "about", label: "About Us" },
   { id: "services", label: "Services" },
+  { id: "pricing", label: "Pricing" },
   { id: "resources", label: "Resources" },
   { id: "contact", label: "Contact Us" },
 ];
 
-const COUNSELOR_IMAGE = "assets/therapist.jpg";
+const COUNSELOR_IMAGE = "assets/therapist.jpeg";
+const COUNSELOR_IMAGE2 = "assets/PROFILE 2.jpeg";
+// ---------------------------------------------------------------------------
+// Vision, Mission
+// ---------------------------------------------------------------------------
+
+const VISION_TEXT = "To become a trusted leader in accessible psychological and counselling services, empowering neurodivergent individuals, strengthening families, and promoting emotional well-being across communities through compassionate, evidence-informed, and inclusive care.";
+
+const MISSION_TEXT = "At Qhawelethu Wellness Counselling, our mission is to provide professional, ethical, and accessible online psychological support that helps individuals, families, and communities navigate life's challenges with confidence and resilience. We are committed to delivering evidence-informed counselling, neurodiversity support, behavioural consultation, parent education, and mental wellness services that recognise each person's unique strengths and experiences. Through collaboration, education, and compassionate care, we strive to foster healthier relationships, emotional growth, and lasting positive change.";
 
 const SPECIALIZATIONS = [
   "Child & Adolescent",
@@ -140,3 +149,140 @@ const BOOKING_SERVICES = [
 ];
 
 const TIME_SLOTS = ["09:00 AM", "10:30 AM", "12:00 PM", "02:00 PM", "03:30 PM", "05:00 PM"];
+
+// ---------------------------------------------------------------------------
+// Pricing (USD, per the Qhawelethu Wellness Counselling service guide)
+// ---------------------------------------------------------------------------
+const PRICING_NOTE = "Regional concession rates may be available in certain circumstances.";
+
+const PRICING_PLANS = [
+  { title: "Initial Consultation", duration: "60 minutes", price: "USD 40", desc: "A first session to understand your needs and outline a path forward." },
+  { title: "Individual Counselling", duration: "50 minutes", price: "USD 45", desc: "Ongoing one-on-one support tailored to your personal goals." },
+  { title: "Parent Consultation", duration: "50 minutes", price: "USD 45", desc: "Guidance and coaching for parents navigating their child's needs." },
+  { title: "Family Counselling", duration: "60–75 minutes", price: "USD 65", desc: "Whole-family sessions focused on communication and connection." },
+  { title: "Workshops & Training", duration: "By arrangement", price: "Quote upon request", desc: "Group presentations, webinars, and organisational wellness talks." },
+];
+
+// ---------------------------------------------------------------------------
+// Full Services List (complete catalogue, grouped by category)
+// ---------------------------------------------------------------------------
+const SERVICE_DELIVERY_NOTE = "All services are provided remotely through secure online video consultation, making support accessible to individuals, families, schools, churches, and organisations across different locations, subject to applicable legal and professional requirements.";
+
+const FULL_SERVICES_LIST = [
+  {
+    category: "Neurodiversity Services",
+    items: [
+      "Autism Spectrum Disorder (ASD) Support",
+      "ADHD Support",
+      "Neurodiversity Consultation",
+      "Behavioural Consultation",
+      "Parent Coaching for Neurodivergent Children",
+      "Executive Functioning Support",
+      "Emotional Regulation Support",
+      "Social Skills Development",
+      "Psychoeducation for Families",
+    ],
+  },
+  {
+    category: "Counselling Services",
+    items: [
+      "Individual Counselling",
+      "Child Counselling",
+      "Adolescent Counselling",
+      "Family Counselling",
+      "Parenting Consultation",
+      "Relationship Counselling",
+      "Stress Management",
+      "Anxiety Support",
+      "Grief & Loss Support",
+      "Life Transition Support",
+      "Personal Growth & Resilience Coaching",
+    ],
+  },
+  {
+    category: "Family & Parenting Services",
+    items: [
+      "Parent Guidance",
+      "Parent Coaching",
+      "Behaviour Management Strategies",
+      "Family Communication Support",
+      "Conflict Resolution",
+      "Positive Parenting Education",
+    ],
+  },
+  {
+    category: "Educational & Professional Services",
+    items: [
+      "Neurodiversity Awareness Workshops",
+      "Autism Awareness Workshops",
+      "ADHD Awareness Workshops",
+      "Parent Education Seminars",
+      "School Behaviour Consultation",
+      "Teacher Training",
+      "Church Mental Wellness Presentations",
+      "Community Wellness Workshops",
+      "Organisational Mental Wellness Talks",
+    ],
+  },
+  {
+    category: "Psychological Consultation",
+    items: [
+      "Behavioural Consultation",
+      "Case Consultation",
+      "Parent Consultation",
+      "School Consultation",
+      "Psychoeducation Sessions",
+    ],
+  },
+  {
+    category: "Session Formats",
+    items: [
+      "Secure Online Video Consultations",
+      "Individual Sessions",
+      "Family Sessions",
+      "Parent-Only Sessions",
+      "Workshops",
+      "Group Presentations",
+      "Educational Webinars",
+    ],
+  },
+];
+
+// ---------------------------------------------------------------------------
+// Client Intake Form data
+// ---------------------------------------------------------------------------
+const INTAKE_CONCERNS = [
+  "Anxiety", "Depression", "Stress Management", "Grief & Loss", "Trauma",
+  "Emotional Regulation", "Relationship Difficulties", "Family Conflict",
+  "Parenting Support", "Child Behavioural Challenges", "Autism Spectrum Disorder (ASD)",
+  "ADHD", "Neurodiversity Support", "Social Skills Development", "Self-Esteem",
+  "Personal Growth", "Academic Challenges", "Workplace Stress", "Life Transitions",
+];
+
+const INTAKE_PLATFORMS = ["Zoom", "Google Meet"];
+
+const INTAKE_BACKGROUND_QUESTIONS = [
+  { id: "prev_counselling", label: "Have you previously attended counselling?" },
+  { id: "psych_assessment", label: "Have you ever received a psychological assessment?" },
+  { id: "diagnosed_condition", label: "Have you ever been diagnosed with a mental health or neurodevelopmental condition?" },
+  { id: "current_medication", label: "Are you currently taking any medication?" },
+  { id: "other_healthcare", label: "Are you currently seeing another healthcare professional?" },
+  { id: "medical_conditions", label: "Do you have any medical conditions that may be relevant?" },
+];
+
+const INTAKE_AGREEMENT_ITEMS = [
+  { id: "agree_online", label: "Sessions are conducted online." },
+  { id: "agree_private_space", label: "I will attend my session in a private and quiet environment." },
+  { id: "agree_interruptions", label: "I understand internet interruptions may occur." },
+  { id: "agree_confidentiality", label: "I understand confidentiality has limitations when using online technology." },
+  { id: "agree_not_emergency", label: "I understand online counselling is not an emergency service." },
+  { id: "agree_remote_consent", label: "I consent to receiving psychological and counselling services remotely." },
+];
+
+const INTAKE_PRIVACY_ITEM = { id: "privacy_consent", label: "I consent to the collection and secure storage of my personal information in accordance with applicable privacy requirements." };
+
+const INTAKE_CANCELLATION_ITEMS = [
+  { id: "cancel_24h", label: "I understand cancellations require at least 24 hours' notice." },
+  { id: "cancel_charge", label: "Missed appointments may be charged." },
+  { id: "cancel_late", label: "Late arrival may shorten my consultation time." },
+];

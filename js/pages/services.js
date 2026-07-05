@@ -1,3 +1,13 @@
+function renderFullServicesGroup(group) {
+  return `
+    <div class="qw-value-card">
+      <h3 class="qw-display" style="margin-bottom:0.75rem;">${group.category}</h3>
+      <ul style="margin:0; padding-left:1.1rem;">
+        ${group.items.map((item) => `<li style="margin-bottom:0.35rem;">${item}</li>`).join("")}
+      </ul>
+    </div>`;
+}
+
 function renderServicesPage() {
   return `
     ${renderNavBar("services")}
@@ -29,6 +39,21 @@ function renderServicesPage() {
               <button class="qw-learn-more" data-nav="contact">Contact Us To Learn more ${Icons.arrowRight(13)}</button>
             </div>`
           ).join("")}
+        </section>
+
+        <!-- Full services list -->
+        <section id="full-services-list" style="margin-top: 3.5rem;">
+          <p class="qw-eyebrow">The complete picture</p>
+          <h2 class="qw-display qw-section-title" style="font-size:28px;">Our Full Range of Services</h2>
+          <p class="qw-hero-sub" style="margin-bottom:1.5rem;">
+            ${SERVICE_DELIVERY_NOTE}
+          </p>
+          <div class="qw-grid-2">
+            ${FULL_SERVICES_LIST.map((group) => renderFullServicesGroup(group)).join("")}
+          </div>
+          <button class="qw-btn-primary" data-nav="pricing" style="margin-top:1.5rem;">
+            View Pricing ${Icons.arrowRight(13)}
+          </button>
         </section>
       </div>
 

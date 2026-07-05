@@ -95,13 +95,13 @@ function counselorCard({ withBio = false, eyebrow = "Credentials & trust" } = {}
     <div class="qw-side-card sage">
       <p class="qw-side-eyebrow">${eyebrow}</p>
       <div class="qw-counselor-row">
-      <div class="qw-avatar qw-display">${typeof COUNSELOR_IMAGE !== 'undefined' && COUNSELOR_IMAGE ? `<img src="${COUNSELOR_IMAGE}" alt="Finni Radebe"/>` : 'F'}</div>
+      <div class="qw-avatar qw-display">${typeof COUNSELOR_IMAGE !== 'undefined' && COUNSELOR_IMAGE ? `<img src="${COUNSELOR_IMAGE}" alt="Qhawe Romeo Themba"/>` : 'F'}</div>
         <div>
-          <div class="qw-display qw-counselor-name">Finni Radebe</div>
-          <div class="qw-counselor-role">Lead Counselor</div>
+          <div class="qw-display qw-counselor-name">Qhawe Romeo Themba</div>
+          <div class="qw-counselor-role">Neurodiversity Affirming Therapist</div>
           ${
             withBio
-              ? `<p class="qw-counselor-bio">Finni brings over a decade of experience supporting neurodivergent individuals and families with a warm, client-centred approach.</p>`
+              ? `<p class="qw-counselor-bio">Qhawe brings over a decade of experience supporting neurodivergent individuals and families with a warm, client-centred approach.</p>`
               : `<div class="qw-counselor-reg">Experienced in supporting neurodivergent individuals and families with a warm, client-centred approach.</div>`
           }
         </div>
@@ -111,6 +111,27 @@ function counselorCard({ withBio = false, eyebrow = "Credentials & trust" } = {}
         ${SPECIALIZATIONS.map((s) => `<span class="qw-spec-pill">${s}</span>`).join("")}
       </div>
     </div>
+
+    <div class="qw-side-card sage">
+      <p class="qw-side-eyebrow">${eyebrow}</p>
+      <div class="qw-counselor-row">
+      <div class="qw-avatar qw-display">${typeof COUNSELOR_IMAGE2 !== 'undefined' && COUNSELOR_IMAGE2 ? `<img src="${COUNSELOR_IMAGE2}" alt="Phethile Mokoena"/>` : 'F'}</div>
+        <div>
+          <div class="qw-display qw-counselor-name">Phethile Mokoena</div>
+          <div class="qw-counselor-role">Wellness Therapist</div>
+          ${
+            withBio
+              ? `<p class="qw-counselor-bio">Phethile Mokoena is an experienced director of the program implementation.</p>`
+              : `<div class="qw-counselor-reg">Experienced in supporting neurodivergent individuals and families with a warm, client-centred approach.</div>`
+          }
+        </div>
+      </div>
+      <p class="qw-spec-label">Specializations</p>
+      <div class="qw-spec-grid">
+        ${SPECIALIZATIONS.map((s) => `<span class="qw-spec-pill">${s}</span>`).join("")}
+      </div>
+    </div>
+    
   `;
 }
 

@@ -5,6 +5,29 @@ const bookingState = {
   selectedSlot: "10:30 AM",
 };
 
+const TIME_ZONES = [
+  "SAST — South Africa (UTC+2)",
+  "GMT/UTC — London (winter)",
+  "BST — London (summer)",
+  "CET — Central Europe (winter)",
+  "CEST — Central Europe (summer)",
+  "EET — Eastern Europe / Cairo",
+  "EAT — East Africa (Nairobi)",
+  "WAT — West Africa (Lagos)",
+  "GST — Gulf Standard Time (Dubai)",
+  "IST — India Standard Time",
+  "AEST — Australia Eastern",
+  "NZST — New Zealand",
+  "EST — US Eastern (winter)",
+  "EDT — US Eastern (summer)",
+  "CST — US Central (winter)",
+  "CDT — US Central (summer)",
+  "MST — US Mountain (winter)",
+  "MDT — US Mountain (summer)",
+  "PST — US Pacific (winter)",
+  "PDT — US Pacific (summer)",
+];
+
 function renderBookingCalendarCells() {
   const daysInMonth = 31;
   const firstWeekday = 0; // Sunday
@@ -14,9 +37,173 @@ function renderBookingCalendarCells() {
   return cells;
 }
 
-function renderBookingPage() {
+function renderIntakeCheckbox(id, label) {
+  return `
+    <label class="qw-intake-check-row" style="display:flex; align-items:flex-start; gap:0.5rem; margin-bottom:0.6rem; font-size:14px;">
+      <input type="checkbox" id="${id}" style="margin-top:0.2rem;" />
+      <span>${label}</span>
+    </label>`;
+}
+
+function renderIntakeYesNo(id, label) {
+  return `
+    <div class="qw-intake-yesno" style="margin-bottom:0.85rem;">
+      <label class="qw-form-label" style="display:block; margin-bottom:0.35rem;">${label}</label>
+      <div style="display:flex; gap:1.25rem; font-size:14px;">
+        <label style="display:flex; align-items:center; gap:0.35rem;"><input type="radio" name="${id}" value="yes" /> Yes</label>
+        <label style="display:flex; align-items:center; gap:0.35rem;"><input type="radio" name="${id}" value="no" /> No</label>
+      </div>
+    </div>`;
+}
+
+function renderIntakeForm() {
   const cells = renderBookingCalendarCells();
 
+  return `
+    <section id="intake-form" class="qw-booking-form-card" style="margin-top: 3.5rem;">
+      <p class="qw-eyebrow">Client intake &amp; booking</p>
+      <h2 class="qw-display qw-section-title" style="font-size:26px;">Client Intake Form</h2>
+      <p class="qw-hero-sub" style="margin-bottom:2rem;">
+        Complete this form to book your session. Your information is
+        encrypted, POPIA-compliant, and never shared.
+      </p>
+
+      <!-- Service & schedule -->
+      <div class="qw-details-label">Service &amp; Schedule</div>
+      <div class="qw-steps-grid" id="qw-booking-steps">
+        ${renderBookingSteps()}
+      </div>
+
+      <div class="qw-grid-2" id="qw-booking-services" style="margin-bottom:1.5rem;">
+        ${BOOKING_SERVICES.map((s) => renderBookingServiceBtn(s)).join("")}
+      </div>
+
+      <div class="qw-booking-grid" style="margin-bottom:1.5rem;">
+        <!-- Calendar -->
+        <div>
+          <div class="qw-cal-header">
+            <span class="qw-cal-month">January 2027</span>
+            <div class="qw-cal-nav">
+              <button class="qw-cal-nav-btn" aria-label="Previous month">${Icons.chevronLeft(14)}</button>
+              <button class="qw-cal-nav-btn" aria-label="Next month">${Icons.chevronRight(14)}</button>
+            </div>
+          </div>
+          <div class="qw-cal-weekdays">
+            ${["S","M","T","W","T","F","S"].map((d) => `<div>${d}</div>`).join("")}
+          </div>
+          <div class="qw-cal-days" id="qw-cal-days">
+            ${cells
+              .map(
+                (day) => `
+              <button class="qw-cal-day ${day === bookingState.selectedDay ? "selected" : ""}"
+                ${day ? `data-day="${day}"` : "disabled"}>
+                ${day || ""}
+              </button>`
+              )
+              .join("")}
+          </div>
+        </div>
+
+        <div class="qw-booking-divider"></div>
+
+        <!-- Time slots -->
+        <div>
+          <div class="qw-slots-label" id="qw-slots-label">Available slots — Jan ${bookingState.selectedDay}</div>
+          <div class="qw-slots-wrap" id="qw-slots-wrap">
+            ${TIME_SLOTS.map((t) => renderSlotPill(t)).join("")}
+          </div>
+        </div>
+      </div>
+
+      <!-- Personal information -->
+      <div class="qw-details-label" style="margin-top:1.75rem;">Personal Information</div>
+      <div class="qw-form-grid">
+        <input id="qw-intake-fullname" class="qw-input" placeholder="Full name" />
+        <input id="qw-intake-dob" class="qw-input" type="date" placeholder="Date of birth" />
+        <input id="qw-intake-age" class="qw-input" type="number" min="0" placeholder="Age" />
+        <input id="qw-intake-gender" class="qw-input" placeholder="Gender (optional)" />
+        <input id="qw-intake-nationality" class="qw-input" placeholder="Nationality" />
+        <input id="qw-intake-country" class="qw-input" placeholder="Country of residence" />
+      </div>
+      <input id="qw-intake-address" class="qw-input" placeholder="Home address" style="width:100%; margin-bottom:0.75rem;" />
+      <div class="qw-form-grid">
+        <input id="qw-intake-email" class="qw-input" placeholder="Email address" />
+        <input id="qw-intake-mobile" class="qw-input" placeholder="Mobile number (with country code)" />
+        <input id="qw-intake-language" class="qw-input" placeholder="Preferred language" />
+        <input id="qw-intake-occupation" class="qw-input" placeholder="Occupation" />
+        <input id="qw-intake-marital" class="qw-input" placeholder="Marital status" />
+      </div>
+
+      <div class="qw-form-grid" style="margin-top:0.5rem;">
+        <input id="qw-intake-emergency-name" class="qw-input" placeholder="Emergency contact name" />
+        <input id="qw-intake-emergency-relationship" class="qw-input" placeholder="Emergency contact relationship" />
+        <input id="qw-intake-emergency-number" class="qw-input" placeholder="Emergency contact number" style="grid-column: span 1;" />
+      </div>
+
+      <!-- Appointment information -->
+      <div class="qw-details-label" style="margin-top:1.75rem;">Appointment Information</div>
+      <div class="qw-form-grid">
+        <select id="qw-intake-timezone" class="qw-input">
+          <option value="">Preferred time zone</option>
+          ${TIME_ZONES.map((tz) => `<option value="${tz}">${tz}</option>`).join("")}
+        </select>
+        <select id="qw-intake-platform" class="qw-input">
+          <option value="">Preferred consultation platform</option>
+          ${INTAKE_PLATFORMS.map((p) => `<option value="${p}">${p}</option>`).join("")}
+        </select>
+      </div>
+      <input id="qw-intake-referral" class="qw-input" placeholder="How did you hear about Qhawelethu Wellness Counselling?" style="width:100%; margin-bottom:0.75rem;" />
+
+      <!-- Presenting concern -->
+      <div class="qw-details-label" style="margin-top:1.75rem;">Presenting Concern</div>
+      <textarea id="qw-intake-concern" class="qw-textarea" placeholder="What brings you to counselling today?" rows="3" style="width:100%; margin-bottom:1rem;"></textarea>
+      <label class="qw-form-label" style="display:block; margin-bottom:0.5rem;">Please select any areas you would like support with</label>
+      <div class="qw-grid-2" id="qw-intake-concern-checks" style="margin-bottom:0.5rem;">
+        ${INTAKE_CONCERNS.map((c) => renderIntakeCheckbox(`concern-${c.replace(/\W+/g, "-").toLowerCase()}`, c)).join("")}
+      </div>
+      <input id="qw-intake-concern-other" class="qw-input" placeholder="Other (please specify)" style="width:100%; margin-bottom:1rem;" />
+
+      <!-- Medical & psychological background -->
+      <div class="qw-details-label" style="margin-top:1.75rem;">Medical &amp; Psychological Background</div>
+      ${INTAKE_BACKGROUND_QUESTIONS.map((q) => renderIntakeYesNo(`qw-intake-${q.id}`, q.label)).join("")}
+      <textarea id="qw-intake-background-note" class="qw-textarea" placeholder="Is there anything else you would like your practitioner to know before your first session?" rows="3" style="width:100%; margin-bottom:1rem;"></textarea>
+
+      <!-- Online consultation agreement -->
+      <div class="qw-details-label" style="margin-top:1.75rem;">Online Consultation Agreement</div>
+      <p class="qw-hero-sub" style="margin-bottom:0.75rem; font-size:14px;">Please confirm that you understand:</p>
+      ${INTAKE_AGREEMENT_ITEMS.map((a) => renderIntakeCheckbox(a.id, a.label)).join("")}
+      <div class="qw-form-grid" style="margin-top:0.5rem;">
+        <input id="qw-intake-agreement-signature" class="qw-input" placeholder="Digital signature" />
+        <input id="qw-intake-agreement-date" class="qw-input" type="date" />
+      </div>
+
+      <!-- Privacy consent -->
+      <div class="qw-details-label" style="margin-top:1.75rem;">Privacy Consent</div>
+      ${renderIntakeCheckbox(INTAKE_PRIVACY_ITEM.id, INTAKE_PRIVACY_ITEM.label)}
+      <div class="qw-form-grid" style="margin-top:0.5rem;">
+        <input id="qw-intake-privacy-signature" class="qw-input" placeholder="Digital signature" />
+        <input id="qw-intake-privacy-date" class="qw-input" type="date" />
+      </div>
+
+      <!-- Cancellation policy -->
+      <div class="qw-details-label" style="margin-top:1.75rem;">Cancellation Policy</div>
+      ${INTAKE_CANCELLATION_ITEMS.map((c) => renderIntakeCheckbox(c.id, c.label)).join("")}
+      <div class="qw-form-grid" style="margin-top:0.5rem;">
+        <input id="qw-intake-cancellation-signature" class="qw-input" placeholder="Digital signature" />
+        <input id="qw-intake-cancellation-date" class="qw-input" type="date" />
+      </div>
+
+      <button class="qw-btn-primary" id="qw-submit-intake" style="padding:0.75rem 1.75rem; font-size:14px; margin-top:1.5rem;">
+        Submit Booking
+      </button>
+      <p class="qw-form-note" style="margin-top:1rem; font-size:12px; color:var(--charcoal); opacity:0.75;">
+        By submitting this form you accept the <a class="qw-terms-link" href="assets/T&C's.pdf" target="_blank" rel="noopener noreferrer">T&C's</a> provided by this website.
+      </p>
+      <p class="qw-form-note" id="qw-intake-status" style="margin-top:0.5rem; font-size:12px; color:var(--charcoal); opacity:0.75;"></p>
+    </section>`;
+}
+
+function renderBookingPage() {
   return `
     ${renderNavBar("booking")}
     <main class="page-main">
@@ -38,82 +225,14 @@ function renderBookingPage() {
             in person in Gauteng, or from home over telehealth.
           </p>
           <div class="qw-hero-cta-row">
-            <a href="#booking-form" class="qw-btn-ochre">Book Your Next Session</a>
+            <a href="#intake-form" class="qw-btn-ochre">Book Your Next Session</a>
             <a href="#services-list" class="qw-btn-outline">Explore Services</a>
           </div>
         </section>
 
-        <!-- Services -->
-        <section id="services-list" style="margin-bottom: 4rem;">
-          <p class="qw-eyebrow">What we offer</p>
-          <h2 class="qw-display qw-section-title" style="font-size:28px;">Services built around your family</h2>
-          <div class="qw-grid-2" id="qw-booking-services">
-            ${BOOKING_SERVICES.map((s) => renderBookingServiceBtn(s)).join("")}
-          </div>
-        </section>
 
-        <!-- Booking form -->
-        <section id="booking-form" class="qw-booking-form-card">
-          <p class="qw-eyebrow">Booking</p>
-          <h2 class="qw-display qw-section-title" style="font-size:26px;">Reserve your session in three steps</h2>
-
-          <div class="qw-steps-grid" id="qw-booking-steps">
-            ${renderBookingSteps()}
-          </div>
-
-          <div class="qw-booking-grid">
-            <!-- Calendar -->
-            <div>
-              <div class="qw-cal-header">
-                <span class="qw-cal-month">January 2027</span>
-                <div class="qw-cal-nav">
-                  <button class="qw-cal-nav-btn" aria-label="Previous month">${Icons.chevronLeft(14)}</button>
-                  <button class="qw-cal-nav-btn" aria-label="Next month">${Icons.chevronRight(14)}</button>
-                </div>
-              </div>
-              <div class="qw-cal-weekdays">
-                ${["S","M","T","W","T","F","S"].map((d) => `<div>${d}</div>`).join("")}
-              </div>
-              <div class="qw-cal-days" id="qw-cal-days">
-                ${cells
-                  .map(
-                    (day) => `
-                  <button class="qw-cal-day ${day === bookingState.selectedDay ? "selected" : ""}"
-                    ${day ? `data-day="${day}"` : "disabled"}>
-                    ${day || ""}
-                  </button>`
-                  )
-                  .join("")}
-              </div>
-            </div>
-
-            <div class="qw-booking-divider"></div>
-
-            <!-- Time slots + form -->
-            <div>
-              <div style="margin-bottom:1.5rem;">
-                <div class="qw-slots-label" id="qw-slots-label">Available slots — Jan ${bookingState.selectedDay}</div>
-                <div class="qw-slots-wrap" id="qw-slots-wrap">
-                  ${TIME_SLOTS.map((t) => renderSlotPill(t)).join("")}
-                </div>
-              </div>
-
-              <div class="qw-details-label">Your details</div>
-              <div class="qw-form-grid">
-                <input id="qw-booking-name" class="qw-input" placeholder="Full name" />
-                <input id="qw-booking-phone" class="qw-input" placeholder="Phone number" />
-              </div>
-              <input id="qw-booking-email" class="qw-input" placeholder="Email address" style="width:100%; margin-bottom:0.75rem;" />
-              <textarea id="qw-booking-note" class="qw-textarea" placeholder="Briefly describe what brings you in" rows="3" style="width:100%; margin-bottom:1rem;"></textarea>
-              <button class="qw-btn-primary" id="qw-confirm-booking" style="padding:0.75rem 1.75rem; font-size:14px;">
-                Confirm Booking
-              </button>
-              <p class="qw-form-note" style="margin-top:1rem; font-size:12px; color:var(--charcoal); opacity:0.75;">
-                By submitting your booking request you accept the <a class="qw-terms-link" href="assets/T&C's.pdf" target="_blank" rel="noopener noreferrer">T&C's</a> provided by this website.
-              </p>
-            </div>
-          </div>
-        </section>
+        <!-- Client intake form (also serves as the booking form) -->
+        ${renderIntakeForm()}
       </div>
 
       <!-- Sidebar -->
@@ -138,7 +257,7 @@ function renderBookingPage() {
           <div class="qw-intake-row">${Icons.shieldCheck(18)} <span>End-to-end encrypted forms</span></div>
           <div class="qw-intake-row">${Icons.fileCheck2(18)} <span>POPIA-compliant records</span></div>
           <div class="qw-intake-row">${Icons.lock(18)} <span>Private, never shared</span></div>
-          <button class="qw-full-btn">Complete Intake Form Below</button>
+          <a href="#intake-form" class="qw-full-btn" style="display:block; text-align:center; text-decoration:none;">Complete Intake Form Below</a>
         </div>
 
         ${blogCard(BLOG_POSTS_BOOKING)}
@@ -198,7 +317,6 @@ function wireBookingPage(root) {
   const slotsWrap = root.querySelector("#qw-slots-wrap");
   const slotsLabel = root.querySelector("#qw-slots-label");
   const stepsWrap = root.querySelector("#qw-booking-steps");
-  const confirmBtn = root.querySelector("#qw-confirm-booking");
 
   function refreshSteps() {
     stepsWrap.innerHTML = renderBookingSteps();
@@ -236,64 +354,160 @@ function wireBookingPage(root) {
     });
   }
 
-  if (confirmBtn) {
-    confirmBtn.addEventListener("click", async () => {
-      const original = confirmBtn.innerHTML;
-      const nameInput = root.querySelector("#qw-booking-name");
-      const phoneInput = root.querySelector("#qw-booking-phone");
-      const emailInput = root.querySelector("#qw-booking-email");
-      const noteInput = root.querySelector("#qw-booking-note");
+  wireIntakeForm(root);
+}
 
-      const fullName = nameInput?.value.trim();
-      const phone = phoneInput?.value.trim();
-      const email = emailInput?.value.trim();
-      const note = noteInput?.value.trim();
+function wireIntakeForm(root) {
+  const submitBtn = root.querySelector("#qw-submit-intake");
+  const statusEl = root.querySelector("#qw-intake-status");
+  if (!submitBtn) return;
 
-      if (!fullName || !email) {
-        confirmBtn.disabled = true;
-        confirmBtn.innerHTML = "Name & email required";
-        setTimeout(() => {
-          confirmBtn.disabled = false;
-          confirmBtn.innerHTML = original;
-        }, 2200);
-        return;
-      }
+  submitBtn.addEventListener("click", async () => {
+    const val = (id) => root.querySelector(`#${id}`)?.value?.trim() || "";
+    const checked = (id) => !!root.querySelector(`#${id}`)?.checked;
+    const radioVal = (name) => root.querySelector(`input[name="${name}"]:checked`)?.value || "";
 
-      confirmBtn.disabled = true;
-      confirmBtn.innerHTML = "Booking...";
+    const fullName = val("qw-intake-fullname");
+    const email = val("qw-intake-email");
+    const mobile = val("qw-intake-mobile");
 
-      const payload = {
-        service: bookingState.selectedService,
-        booking_date: `2027-01-${String(bookingState.selectedDay).padStart(2, "0")}`,
-        time_slot: bookingState.selectedSlot,
-        full_name: fullName,
-        phone,
-        email,
-        note,
-        created_at: new Date().toISOString(),
-      };
+    if (!fullName || !email || !mobile) {
+      statusEl.style.color = "#b5432b";
+      statusEl.textContent = "Please provide at least your full name, email, and mobile number.";
+      return;
+    }
 
-      const result = await window.nySupabase?.sendBookingRequest(payload);
-      if (result?.error) {
-        console.error("Booking save failed:", result.error, result);
-        const message = result.error?.message || "Unable to save booking";
-        confirmBtn.innerHTML = message.length < 32 ? message : "Try again";
-        setTimeout(() => {
-          confirmBtn.disabled = false;
-          confirmBtn.innerHTML = original;
-        }, 2200);
-        return;
-      }
+    const requiredAgreements = INTAKE_AGREEMENT_ITEMS.every((a) => checked(a.id));
+    const privacyAccepted = checked(INTAKE_PRIVACY_ITEM.id);
+    const cancellationAccepted = INTAKE_CANCELLATION_ITEMS.every((c) => checked(c.id));
 
-      confirmBtn.innerHTML = "Booked ✓";
-      setTimeout(() => {
-        confirmBtn.disabled = false;
-        confirmBtn.innerHTML = original;
-        if (nameInput) nameInput.value = "";
-        if (phoneInput) phoneInput.value = "";
-        if (emailInput) emailInput.value = "";
-        if (noteInput) noteInput.value = "";
-      }, 1800);
-    });
-  }
+    if (!requiredAgreements || !privacyAccepted || !cancellationAccepted) {
+      statusEl.style.color = "#b5432b";
+      statusEl.textContent = "Please review and check all agreement, privacy, and cancellation policy items.";
+      return;
+    }
+
+    const original = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = "Submitting...";
+    statusEl.style.color = "";
+    statusEl.textContent = "";
+
+    const selectedConcerns = INTAKE_CONCERNS.filter((c) =>
+      checked(`concern-${c.replace(/\W+/g, "-").toLowerCase()}`)
+    );
+
+    // Short note kept on the bookings row itself (used by the admin
+    // dashboard's bookings tab). The full intake record is stored
+    // separately in intake_forms and linked via booking_id below.
+    const bookingNote = [
+      val("qw-intake-concern") && `Presenting concern: ${val("qw-intake-concern")}`,
+      "Full intake form submitted — see intake_forms record for details.",
+    ].filter(Boolean).join("\n");
+
+    const bookingPayload = {
+      service: bookingState.selectedService,
+      booking_date: `2027-01-${String(bookingState.selectedDay).padStart(2, "0")}`,
+      time_slot: bookingState.selectedSlot,
+      full_name: fullName,
+      phone: mobile,
+      email,
+      note: bookingNote,
+      created_at: new Date().toISOString(),
+    };
+
+    const bookingResult = await window.nySupabase?.sendBookingRequest(bookingPayload);
+    if (bookingResult?.error) {
+      console.error("Booking save failed:", bookingResult.error, bookingResult);
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = original;
+      statusEl.style.color = "#b5432b";
+      statusEl.textContent = bookingResult.error?.message || "Unable to save booking. Please try again.";
+      return;
+    }
+
+    // bookingResult.data is expected to be the inserted row (or an array
+    // containing it), so we can link the intake record back to it.
+    const bookingRow = Array.isArray(bookingResult?.data) ? bookingResult.data[0] : bookingResult?.data;
+    const bookingId = bookingRow?.id || null;
+
+    const intakePayload = {
+      full_name: fullName,
+      date_of_birth: val("qw-intake-dob") || null,
+      age: val("qw-intake-age"),
+      gender: val("qw-intake-gender"),
+      nationality: val("qw-intake-nationality"),
+      country_of_residence: val("qw-intake-country"),
+      home_address: val("qw-intake-address"),
+      email,
+      mobile,
+      preferred_language: val("qw-intake-language"),
+      occupation: val("qw-intake-occupation"),
+      marital_status: val("qw-intake-marital"),
+      emergency_contact_name: val("qw-intake-emergency-name"),
+      emergency_contact_relationship: val("qw-intake-emergency-relationship"),
+      emergency_contact_number: val("qw-intake-emergency-number"),
+
+      preferred_time_zone: root.querySelector("#qw-intake-timezone")?.value || "",
+      preferred_platform: root.querySelector("#qw-intake-platform")?.value || "",
+      referral_source: val("qw-intake-referral"),
+
+      presenting_concern: val("qw-intake-concern"),
+      concern_areas: selectedConcerns,
+      concern_other: val("qw-intake-concern-other"),
+
+      // NOTE: these keys assume each entry in INTAKE_BACKGROUND_QUESTIONS
+      // has an id matching its intake_forms column name (e.g. "prev_counselling").
+      // Adjust here if your actual ids differ.
+      prev_counselling: radioVal("qw-intake-prev_counselling"),
+      psych_assessment: radioVal("qw-intake-psych_assessment"),
+      diagnosed_condition: radioVal("qw-intake-diagnosed_condition"),
+      current_medication: radioVal("qw-intake-current_medication"),
+      other_healthcare: radioVal("qw-intake-other_healthcare"),
+      medical_conditions: radioVal("qw-intake-medical_conditions"),
+      background_note: val("qw-intake-background-note"),
+
+      // NOTE: same assumption here — each checkbox id in
+      // INTAKE_AGREEMENT_ITEMS / INTAKE_CANCELLATION_ITEMS / INTAKE_PRIVACY_ITEM
+      // is assumed to match its intake_forms column name.
+      agree_online: checked("agree_online"),
+      agree_private_space: checked("agree_private_space"),
+      agree_interruptions: checked("agree_interruptions"),
+      agree_confidentiality: checked("agree_confidentiality"),
+      agree_not_emergency: checked("agree_not_emergency"),
+      agree_remote_consent: checked("agree_remote_consent"),
+      agreement_signature: val("qw-intake-agreement-signature"),
+      agreement_date: val("qw-intake-agreement-date") || null,
+
+      privacy_consent: checked("privacy_consent"),
+      privacy_signature: val("qw-intake-privacy-signature"),
+      privacy_date: val("qw-intake-privacy-date") || null,
+
+      cancel_24h: checked("cancel_24h"),
+      cancel_charge: checked("cancel_charge"),
+      cancel_late: checked("cancel_late"),
+      cancellation_signature: val("qw-intake-cancellation-signature"),
+      cancellation_date: val("qw-intake-cancellation-date") || null,
+
+      booking_id: bookingId,
+    };
+
+    const intakeResult = await window.nySupabase?.sendIntakeForm(intakePayload);
+    if (intakeResult?.error) {
+      console.error("Intake form save failed:", intakeResult.error, intakeResult);
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = original;
+      statusEl.style.color = "#b5432b";
+      statusEl.textContent = intakeResult.error?.message || "Booking saved, but intake details could not be saved. Please contact us directly.";
+      return;
+    }
+
+    submitBtn.innerHTML = "Booked ✓";
+    statusEl.style.color = "";
+    statusEl.textContent = "Thank you — your booking and intake details have been received.";
+    setTimeout(() => {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = original;
+    }, 1800);
+  });
 }
