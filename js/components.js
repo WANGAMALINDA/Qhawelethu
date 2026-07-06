@@ -187,7 +187,6 @@ function contactMiniCard() {
   return `
     <div id="contact-mini" class="qw-side-card bordered qw-contact-mini">
       <div class="row">${Icons.phone(14, "var(--moss)")} +27 76 829 6508</div>
-      <div class="row">${Icons.mail(14, "var(--moss)")} info@qhawelethuwc.co.za</div>
       <div class="row">${Icons.mapPin(14, "var(--moss)")} Benoni, Gauteng</div>
       <div class="qw-social-row">
         <div class="qw-social-circle">${Icons.messageCircle(14, "var(--ink)")}</div>

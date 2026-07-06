@@ -85,10 +85,6 @@ function renderContactPage() {
           <div class="qw-side-card bordered" style="border-top:none; border-radius:0;">
             <div class="qw-contact-mini">
               <div class="row">${Icons.phone(14, "var(--moss)")} +27 76 829 6508</div>
-              <div class="row">${Icons.mail(14, "var(--moss)")} info@qhawelethuwc.co.za</div>
-              <div class="qw-social-row">
-                <div class="qw-social-circle">${Icons.messageCircle(14, "var(--ink)")}</div>
-              </div>
             </div>
           </div>
         </div>
