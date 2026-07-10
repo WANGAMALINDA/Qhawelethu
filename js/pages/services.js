@@ -18,11 +18,11 @@ function renderServicesPage() {
             <svg viewBox="0 0 400 400" class="qw-rings" style="right:-6rem; top:-6rem; width:380px; height:380px;" aria-hidden="true">
             ${[40,76,112,148,184].map((r,i)=>`<circle cx="200" cy="200" r="${r}" fill="none" stroke="#DCE6DE" stroke-width="${i===0?2:1}" opacity="${(0.14-i*0.02).toFixed(2)}"/>`).join("")}
           </svg>
-          <p class="qw-hero-eyebrow">Our Therapeutic Services</p>
+          <p class="qw-hero-eyebrow">${BRAND_POSITIONING}</p>
           <h1 class="qw-display qw-hero-title" style="font-size:34px;">A Pathway to Healing</h1>
           <p class="qw-hero-sub" style="margin-bottom:0;">
-            Compassionate care for every unique journey — tailored to children, couples,
-            individuals, and families alike.
+            Compassionate, neurodiversity-affirming care for every unique journey — tailored to
+            children, couples, individuals, and families, delivered online worldwide.
           </p>
         </section>
 
@@ -40,7 +40,28 @@ function renderServicesPage() {
             </div>`
           ).join("")}
         </section>
-
+        <!-- Community & organisational services -->
+        <section style="margin-top: 3.5rem;">
+          <p class="qw-eyebrow">Workshops &amp; consultation</p>
+          <h2 class="qw-display qw-section-title" style="font-size:24px;">We Also Work With Organisations</h2>
+          <div class="qw-grid-3-article">
+            <div class="qw-card">
+              <h3 class="qw-display">For Churches</h3>
+              <p>Parent seminars, awareness sessions, and pastoral mental health support for congregations.</p>
+              <button class="qw-learn-more" data-nav="churches">Learn more ${Icons.arrowRight(13)}</button>
+            </div>
+            <div class="qw-card">
+              <h3 class="qw-display">For Schools</h3>
+              <p>Teacher training, classroom behaviour support, and inclusion strategies for educators.</p>
+              <button class="qw-learn-more" data-nav="schools">Learn more ${Icons.arrowRight(13)}</button>
+            </div>
+            <div class="qw-card">
+              <h3 class="qw-display">For Professionals</h3>
+              <p>Clinical supervision, case consultation, and professional development workshops.</p>
+              <button class="qw-learn-more" data-nav="professionals">Learn more ${Icons.arrowRight(13)}</button>
+            </div>
+          </div>
+        </section>
         <!-- Full services list -->
         <section id="full-services-list" style="margin-top: 3.5rem;">
           <p class="qw-eyebrow">The complete picture</p>
@@ -48,7 +69,7 @@ function renderServicesPage() {
           <p class="qw-hero-sub" style="margin-bottom:1.5rem;">
             ${SERVICE_DELIVERY_NOTE}
           </p>
-          <div class="qw-grid-2">
+          <div class="qw-grid-3-article">
             ${FULL_SERVICES_LIST.map((group) => renderFullServicesGroup(group)).join("")}
           </div>
           <button class="qw-btn-primary" data-nav="pricing" style="margin-top:1.5rem;">

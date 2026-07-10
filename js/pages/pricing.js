@@ -35,6 +35,18 @@ function renderPricingPage() {
           ${PRICING_NOTE}
         </p>
 
+        <!-- What's included -->
+        <section class="qw-value-card" style="background: var(--sage); margin-top: 2rem;">
+          <h3 class="qw-display">Every Consultation Includes</h3>
+          <div class="qw-spec-grid" style="grid-template-columns: repeat(2, 1fr); gap: 0.6rem; margin-top: 0.75rem;">
+            <span class="qw-spec-pill" style="text-align:left;">50-minute session</span>
+            <span class="qw-spec-pill" style="text-align:left;">Individualised support</span>
+            <span class="qw-spec-pill" style="text-align:left;">Practical strategies</span>
+            <span class="qw-spec-pill" style="text-align:left;">Resources where appropriate</span>
+            <span class="qw-spec-pill" style="text-align:left;">Follow-up recommendations</span>
+          </div>
+        </section>
+
         <section style="margin-top: 2.5rem;">
           <button class="qw-btn-ochre" data-nav="booking">
             Book a Session ${Icons.arrowRight(16)}

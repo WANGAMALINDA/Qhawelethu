@@ -6,6 +6,10 @@ const PAGES = {
   services: { render: renderServicesPage, wire: null },
   pricing: { render: renderPricingPage, wire: null },
   resources: { render: renderResourcesPage, wire: null },
+  faq: { render: renderFaqPage, wire: null },
+  churches: { render: renderChurchesPage, wire: null },
+  schools: { render: renderSchoolsPage, wire: null },
+  professionals: { render: renderProfessionalsPage, wire: null },
   booking: { render: renderBookingPage, wire: wireBookingPage },
   contact: { render: renderContactPage, wire: wireContactPage },
 };
@@ -37,11 +41,15 @@ function renderPage(pageId) {
 
 function pageTitleFor(pageId) {
   const titles = {
-    home: "Qhawelethu Wellness Counselling",
+    home: "Qhawelethu Wellness Counselling | Neurodiversity-Affirming Online Counselling",
     about: "About Us · Qhawelethu Wellness Counselling",
     services: "Services · Qhawelethu Wellness Counselling",
     pricing: "Pricing · Qhawelethu Wellness Counselling",
     resources: "Resources · Qhawelethu Wellness Counselling",
+    faq: "FAQ · Qhawelethu Wellness Counselling",
+    churches: "For Churches · Qhawelethu Wellness Counselling",
+    schools: "For Schools · Qhawelethu Wellness Counselling",
+    professionals: "For Professionals · Qhawelethu Wellness Counselling",
     booking: "Book a Session · Qhawelethu Wellness Counselling",
     contact: "Contact Us · Qhawelethu Wellness Counselling",
   };

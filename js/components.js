@@ -1,16 +1,18 @@
 // Shared markup builders: NavBar, Footer, and reusable sidebar blocks.
 
 function renderNavBar(currentPage) {
+  const featuredNavIds = new Set(["churches", "schools", "professionals", "faq"]);
+
   const desktopLinks = NAV_ITEMS.map(
     (item) => `
-      <button class="qw-nav-link ${item.id === currentPage ? "active" : ""}" data-nav="${item.id}" ${item.id === currentPage ? 'aria-current="page"' : ""}>
+      <button class="qw-nav-link ${item.id === currentPage ? "active" : ""} ${featuredNavIds.has(item.id) ? "featured" : ""}" data-nav="${item.id}" ${item.id === currentPage ? 'aria-current="page"' : ""}>
         ${item.label}
       </button>`
   ).join("");
 
   const mobileLinks = NAV_ITEMS.map(
     (item) => `
-      <button class="qw-mobile-link ${item.id === currentPage ? "active" : ""}" data-nav="${item.id}" ${item.id === currentPage ? 'aria-current="page"' : ""}>
+      <button class="qw-mobile-link ${item.id === currentPage ? "active" : ""} ${featuredNavIds.has(item.id) ? "featured" : ""}" data-nav="${item.id}" ${item.id === currentPage ? 'aria-current="page"' : ""}>
         ${item.label}
       </button>`
   ).join("");
@@ -53,9 +55,19 @@ function renderNavBar(currentPage) {
 }
 
 function renderFooter() {
+  const featuredFooterIds = new Set(["churches", "schools", "professionals", "faq"]);
+  const footerLinks = [
+    { id: "churches", label: "For Churches" },
+    { id: "schools", label: "For Schools" },
+    { id: "professionals", label: "For Professionals" },
+    { id: "faq", label: "FAQ" },
+  ];
   return `
     <footer class="qw-footer">
-      Qhawelethu Wellness Counselling · © ${new Date().getFullYear()}
+      <div class="qw-footer-links" style="display:flex; flex-wrap:wrap; justify-content:center; gap:1.25rem; margin-bottom:0.75rem;">
+        ${footerLinks.map((l) => `<button class="qw-footer-link" data-nav="${l.id}" style="background:none; border:none; padding:0; font-size:12px; color: #FFFFFF; cursor:pointer; text-decoration:underline;">${l.label}</button>`).join("")}
+      </div>
+      Qhawelethu Wellness Counselling · Online Worldwide · © ${new Date().getFullYear()}
     </footer>
   `;
 }
@@ -91,48 +103,31 @@ function wireNavBar(root) {
 /* ---------- Reusable sidebar blocks ---------- */
 
 function counselorCard({ withBio = false, eyebrow = "Credentials & trust" } = {}) {
-  return `
+  const renderOne = (counselor, image) => `
     <div class="qw-side-card sage">
       <p class="qw-side-eyebrow">${eyebrow}</p>
       <div class="qw-counselor-row">
-      <div class="qw-avatar qw-display">${typeof COUNSELOR_IMAGE !== 'undefined' && COUNSELOR_IMAGE ? `<img src="${COUNSELOR_IMAGE}" alt="Qhawe Romeo Themba"/>` : 'F'}</div>
+      <div class="qw-avatar qw-display">${image ? `<img src="${image}" alt="${counselor.name}"/>` : 'F'}</div>
         <div>
-          <div class="qw-display qw-counselor-name">Qhawe Romeo Themba</div>
-          <div class="qw-counselor-role">Neurodiversity Affirming Therapist</div>
+          <div class="qw-display qw-counselor-name">${counselor.name}</div>
+          <div class="qw-counselor-role">${counselor.role}</div>
           ${
             withBio
-              ? `<p class="qw-counselor-bio">Qhawe brings over a decade of experience supporting neurodivergent individuals and families with a warm, client-centred approach.</p>`
-              : `<div class="qw-counselor-reg">Experienced in supporting neurodivergent individuals and families with a warm, client-centred approach.</div>`
+              ? `<p class="qw-counselor-bio">${counselor.bio}</p>`
+              : `<div class="qw-counselor-reg">${counselor.bio}</div>`
           }
         </div>
       </div>
       <p class="qw-spec-label">Specializations</p>
       <div class="qw-spec-grid">
-        ${SPECIALIZATIONS.map((s) => `<span class="qw-spec-pill">${s}</span>`).join("")}
+        ${counselor.specializations.map((s) => `<span class="qw-spec-pill">${s}</span>`).join("")}
       </div>
-    </div>
+    </div>`;
 
-    <div class="qw-side-card sage">
-      <p class="qw-side-eyebrow">${eyebrow}</p>
-      <div class="qw-counselor-row">
-      <div class="qw-avatar qw-display">${typeof COUNSELOR_IMAGE2 !== 'undefined' && COUNSELOR_IMAGE2 ? `<img src="${COUNSELOR_IMAGE2}" alt="Phethile Mokoena"/>` : 'F'}</div>
-        <div>
-          <div class="qw-display qw-counselor-name">Phethile Mokoena</div>
-          <div class="qw-counselor-role">Wellness Therapist</div>
-          ${
-            withBio
-              ? `<p class="qw-counselor-bio">Phethile Mokoena is an experienced director of the program implementation.</p>`
-              : `<div class="qw-counselor-reg">Experienced in supporting neurodivergent individuals and families with a warm, client-centred approach.</div>`
-          }
-        </div>
-      </div>
-      <p class="qw-spec-label">Specializations</p>
-      <div class="qw-spec-grid">
-        ${SPECIALIZATIONS.map((s) => `<span class="qw-spec-pill">${s}</span>`).join("")}
-      </div>
-    </div>
-    
-  `;
+  return (
+    renderOne(COUNSELOR_1, typeof COUNSELOR_IMAGE !== 'undefined' ? COUNSELOR_IMAGE : null) +
+    renderOne(COUNSELOR_2, typeof COUNSELOR_IMAGE2 !== 'undefined' ? COUNSELOR_IMAGE2 : null)
+  );
 }
 
 function testimonialsCard(items = TESTIMONIALS, linkLabel = "Read more stories") {
@@ -185,12 +180,6 @@ function blogCard(posts = BLOG_POSTS, onNavigateResources = true) {
 
 function contactMiniCard() {
   return `
-    <div id="contact-mini" class="qw-side-card bordered qw-contact-mini">
-      <div class="row">${Icons.phone(14, "var(--moss)")} +27 76 829 6508</div>
-      <div class="row">${Icons.mapPin(14, "var(--moss)")} Benoni, Gauteng</div>
-      <div class="qw-social-row">
-        <div class="qw-social-circle">${Icons.messageCircle(14, "var(--ink)")}</div>
-      </div>
-    </div>
+  
   `;
 }

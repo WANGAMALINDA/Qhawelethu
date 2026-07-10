@@ -30,12 +30,6 @@ function renderContactPage() {
             <div class="qw-display value" style="font-size:16px;">info@qhawelethuwc.co.za</div>
             <p class="hint">For detailed, private inquiries</p>
           </div>
-          <div class="qw-contact-method">
-            <div class="icon-circle">${Icons.mapPin(20, "var(--moss)")}</div>
-            <div class="label">Visit in person</div>
-            <div class="qw-display value" style="font-size:16px;">Benoni, Gauteng</div>
-            <p class="hint">By appointment only</p>
-          </div>
         </section>
 
         <!-- Inquiry form -->
@@ -66,28 +60,20 @@ function renderContactPage() {
             By submitting this form you accept the <a class="qw-terms-link" href="assets/T&C's.pdf" target="_blank" rel="noopener noreferrer">T&C's</a> provided by this website.
           </p>
         </section>
+
+        <!-- Professional disclaimer -->
+        <section class="qw-value-card" style="margin-top: 2rem;">
+          <h3 class="qw-display" style="font-size:16px;">Please Note</h3>
+          <ul style="margin:0.5rem 0 0; padding-left:1.1rem; font-size:13px; color:var(--charcoal); opacity:0.85; line-height:1.7;">
+            ${DISCLAIMER_ITEMS.map((d) => `<li style="margin-bottom:0.4rem;">${d}</li>`).join("")}
+          </ul>
+        </section>
       </div>
 
       <!-- Sidebar -->
       <aside class="qw-aside">
         ${counselorCard({ eyebrow: "Meet your counselor" })}
         ${testimonialsCard(CONTACT_TESTIMONIALS)}
-
-        <div class="qw-map-card">
-          <iframe 
-            src="https://www.google.com/maps?q=-26.163311768613674,28.33931743628836&z=15&output=embed" 
-            width="100%" 
-            height="260" 
-            style="border:0;" 
-            allowfullscreen="" 
-            loading="lazy">
-          </iframe>
-          <div class="qw-side-card bordered" style="border-top:none; border-radius:0;">
-            <div class="qw-contact-mini">
-              <div class="row">${Icons.phone(14, "var(--moss)")} +27 76 829 6508</div>
-            </div>
-          </div>
-        </div>
       </aside>
     </main>
     ${renderFooter()}

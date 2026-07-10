@@ -6,6 +6,7 @@ const NAV_ITEMS = [
   { id: "services", label: "Services" },
   { id: "pricing", label: "Pricing" },
   { id: "resources", label: "Resources" },
+  { id: "faq", label: "FAQ" },
   { id: "contact", label: "Contact Us" },
 ];
 
@@ -27,25 +28,69 @@ const SPECIALIZATIONS = [
 
 ];
 
+const COUNSELOR_1 = {
+  name: "Qhawe Romeo Themba",
+  role: "Lead Counsellor | Neurodiversity Specialist",
+  bio: "Helping neurodivergent children, adolescents, and families thrive through compassionate, evidence-informed psychological support.",
+  specializations: ["Autism Spectrum Disorder (ASD)", "ADHD Support", "Behavioural Consultation", "Parent Coaching"],
+};
+
+const COUNSELOR_2 = {
+  name: "Phethile Mokoena",
+  role: "Associate Counsellor | Child & Family Wellness",
+  bio: "Supporting children's emotional wellbeing and strengthening families through compassionate, client-centred counselling.",
+  specializations: ["Child Emotional Wellbeing", "Adolescent Support", "Emotional Regulation", "Family Wellness"],
+};
+
+// ---------------------------------------------------------------------------
+// Positioning, credentials & "why choose us"
+// ---------------------------------------------------------------------------
+
+const BRAND_POSITIONING = "A Neurodiversity-Affirming Counselling & Consultation Practice";
+
+const QUALIFICATIONS = [
+  "BA Psychology",
+  "BA Honours in Applied Psychology",
+  "Diploma in Cognitive Behavioural Therapy (CBT)",
+  "Behaviour Consultation",
+  "Neurodiversity Support Specialist",
+  "Counselling & Family Support",
+];
+
+const WHY_CHOOSE_ITEMS = [
+  "Neurodiversity-Affirming",
+  "Evidence-Informed",
+  "Individualised Support",
+  "Family-Centred",
+  "Confidential",
+  "Online Worldwide",
+  "Practical Strategies",
+  "Compassionate Care",
+];
+
 const TESTIMONIALS = [
   {
     quote: "From our very first session, we felt heard and supported — it changed how our family communicates.",
-    name: "Qhawelethu client",
+    name: "Parent of an 8-year-old with Autism",
   },
   {
-    quote: "We finally found a counsellor who understands our son and works with our whole family, not against us.",
-    name: "J. Mathebula",
+    quote: "The strategies we learned made a real difference in my classroom, not just in theory.",
+    name: "Teacher — Johannesburg",
   },
 ];
 
 const CONTACT_TESTIMONIALS = [
   {
-    quote: "Our first session left me feeling truly heard for the first time in years. Finni made room for the whole family's story.",
-    name: "L. Mokoena",
+    quote: "Our congregation now has practical, compassionate ways to support neurodivergent families.",
+    name: "Church Leader",
   },
   {
-    quote: "We came in unsure how to talk to each other again. Six months later, dinner table conversations feel easy.",
-    name: "T. & S. Naidoo",
+    quote: "Working online never felt like a barrier — our sessions felt just as personal from across the world.",
+    name: "Parent — Philippines",
+  },
+  {
+    quote: "We came in unsure how to talk to each other again. Months later, conversations at home feel easy.",
+    name: "Family — South Africa",
   },
 ];
 
@@ -135,17 +180,19 @@ const SERVICES = [
 ];
 
 const CATEGORIES = [
-  { icon: "bookOpen", title: "Insightful Articles & Blog Posts", desc: "Deep dives on sensory processing, emotional regulation, and neurodiversity-affirming practice.", cta: "Read articles", href: "https://neurodivergentinsights.com/neurodivergent-affirming-practices/" },
   { icon: "clipboardList", title: "Downloadable Workbooks & Exercises", desc: "Practical, step-by-step guides for skill-building and self-reflection, printable for your own pace.", cta: "Download guides", href: "https://infobooks.org/free-pdf-books/self-improvement/" },
   { icon: "video", title: "Webinars & Video Resources", desc: "Pre-recorded sessions and expert-led discussions on mental health and neurodiversity topics.", cta: "Watch videos", href: "https://www.youtube.com/watch?v=Gn0AuZWTGXU" },
   { icon: "link2", title: "Trusted External Links & Partners", desc: "A curated list of reliable organizations, support groups, and external resources we recommend.", cta: "Explore links", href: "https://sites.rowan.edu/neurodiversity/neurodiversity-resources/organizations-and-groups.html" },
+  { icon: "clipboardList", title: "Parent Resources", desc: "Guidance and coaching materials for parents raising neurodivergent children, coming soon to this hub.", cta: "Get in touch", href: "https://neurodivergentinsights.com/neurodivergent-affirming-practices/" },
+  { icon: "bookOpen", title: "Teacher Resources", desc: "Classroom strategies and inclusion tools for educators supporting neurodivergent learners.", cta: "Get in touch", href: "https://www.structural-learning.com/post/neurodiversity-in-the-classroom-a-teachers-guide" },
+  { icon: "video", title: "Church Resources", desc: "Materials to help congregations and pastoral teams support neurodivergent members and families.", cta: "Get in touch", href: "https://churchsupporthub.org/all-resources/" },
 ];
 
 const BOOKING_SERVICES = [
-  { name: "Individual & Trauma", blurb: "One-on-one sessions for anxiety, trauma recovery, and personal growth, at a pace that feels safe." },
-  { name: "Couples & Marriage", blurb: "Rebuild trust and communication together, guided by a counselor trained in relational repair." },
-  { name: "Child & Adolescent", blurb: "Play-based and talk therapy for children navigating big feelings, school stress, or neurodivergence." },
-  { name: "Online Telehealth", blurb: "The same compassionate care from your own home, over a secure, HPCSA-compliant video line." },
+  { name: "For Churches", blurb: "Tailored support for congregations, ministries, and faith-based teams seeking wellness and training." },
+  { name: "For Schools", blurb: "Consultation and support for learners, teachers, and school communities navigating wellbeing needs." },
+  { name: "For Professionals", blurb: "Guidance, supervision, and collaborative support for practitioners and workplace teams." },
+  { name: "For Individuals", blurb: "One-on-one sessions for personal growth, emotional support, and confidential care." },
 ];
 
 const TIME_SLOTS = ["09:00 AM", "10:30 AM", "12:00 PM", "02:00 PM", "03:30 PM", "05:00 PM"];
@@ -172,15 +219,14 @@ const FULL_SERVICES_LIST = [
   {
     category: "Neurodiversity Services",
     items: [
-      "Autism Spectrum Disorder (ASD) Support",
+      "Autism Support",
       "ADHD Support",
-      "Neurodiversity Consultation",
-      "Behavioural Consultation",
-      "Parent Coaching for Neurodivergent Children",
-      "Executive Functioning Support",
-      "Emotional Regulation Support",
+      "Executive Function Coaching",
+      "Behaviour Consultation",
+      "Parent Coaching",
+      "School Consultation",
+      "Emotional Regulation",
       "Social Skills Development",
-      "Psychoeducation for Families",
     ],
   },
   {
@@ -189,61 +235,24 @@ const FULL_SERVICES_LIST = [
       "Individual Counselling",
       "Child Counselling",
       "Adolescent Counselling",
-      "Family Counselling",
-      "Parenting Consultation",
+      "Family Therapy",
       "Relationship Counselling",
+      "Anxiety",
       "Stress Management",
-      "Anxiety Support",
-      "Grief & Loss Support",
-      "Life Transition Support",
-      "Personal Growth & Resilience Coaching",
-    ],
-  },
-  {
-    category: "Family & Parenting Services",
-    items: [
-      "Parent Guidance",
-      "Parent Coaching",
-      "Behaviour Management Strategies",
-      "Family Communication Support",
-      "Conflict Resolution",
-      "Positive Parenting Education",
+      "Grief",
+      "Life Transitions",
     ],
   },
   {
     category: "Educational & Professional Services",
     items: [
-      "Neurodiversity Awareness Workshops",
+      "Teacher Training",
+      "Parent Workshops",
       "Autism Awareness Workshops",
       "ADHD Awareness Workshops",
-      "Parent Education Seminars",
-      "School Behaviour Consultation",
-      "Teacher Training",
-      "Church Mental Wellness Presentations",
-      "Community Wellness Workshops",
-      "Organisational Mental Wellness Talks",
-    ],
-  },
-  {
-    category: "Psychological Consultation",
-    items: [
-      "Behavioural Consultation",
-      "Case Consultation",
-      "Parent Consultation",
+      "Church Mental Health Presentations",
       "School Consultation",
-      "Psychoeducation Sessions",
-    ],
-  },
-  {
-    category: "Session Formats",
-    items: [
-      "Secure Online Video Consultations",
-      "Individual Sessions",
-      "Family Sessions",
-      "Parent-Only Sessions",
-      "Workshops",
-      "Group Presentations",
-      "Educational Webinars",
+      "Organisational Wellness Talks",
     ],
   },
 ];
@@ -285,4 +294,74 @@ const INTAKE_CANCELLATION_ITEMS = [
   { id: "cancel_24h", label: "I understand cancellations require at least 24 hours' notice." },
   { id: "cancel_charge", label: "Missed appointments may be charged." },
   { id: "cancel_late", label: "Late arrival may shorten my consultation time." },
+];
+
+// ---------------------------------------------------------------------------
+// FAQ
+// ---------------------------------------------------------------------------
+
+const FAQ_ITEMS = [
+  { q: "How do online counselling sessions work?", a: "Sessions take place over a secure video platform of your choice — Zoom or Google Meet. After booking, you'll receive a confirmation with a link to join at your scheduled time from anywhere with a private, stable internet connection." },
+  { q: "Who can benefit from neurodiversity-affirming counselling?", a: "Autistic and ADHD individuals, their parents and families, adults exploring a late diagnosis, and anyone seeking support that respects rather than tries to change how their mind works can benefit — as can couples, children, and multi-generational families more broadly." },
+  { q: "What platform do you use for sessions?", a: "We currently offer sessions via Zoom or Google Meet, whichever you prefer. You can select your platform when completing your intake and booking form." },
+  { q: "Are services available internationally?", a: "Yes. All sessions are delivered remotely, so we work with individuals and families across South Africa and internationally, subject to applicable laws and professional regulations in your location." },
+  { q: "How do I book an appointment?", a: "Use the \"Book a Session\" button to reach our live calendar, choose a service, date, and time, and complete the short client intake form. You'll receive confirmation once your booking is received." },
+  { q: "Do you provide workshops for schools and churches?", a: "Yes. We offer tailored workshops and consultation for churches, schools, professionals, and individuals, including teacher training, parent seminars, and awareness sessions — use the booking form to choose the option that fits your needs." },
+  { q: "What is your cancellation policy?", a: "We ask for at least 24 hours' notice to cancel or reschedule. Missed appointments without notice may be charged, and late arrival may shorten the available consultation time." },
+];
+
+// ---------------------------------------------------------------------------
+// Professional disclaimer
+// ---------------------------------------------------------------------------
+
+const DISCLAIMER_ITEMS = [
+  "Services are provided remotely, via secure online video consultation.",
+  "Availability may be subject to applicable laws and professional regulations in the client's location.",
+  "Emergency or crisis services are not provided through this practice. If you are experiencing a mental health emergency, please contact local emergency services or a crisis line in your area.",
+];
+
+// ---------------------------------------------------------------------------
+// For Churches / For Schools / For Professionals
+// ---------------------------------------------------------------------------
+
+const CHURCH_SERVICES = [
+  "Parent Seminars",
+  "Autism Awareness",
+  "ADHD Awareness",
+  "Supporting Neurodivergent Families",
+  "Pastoral Mental Health",
+  "Mental Wellness Workshops",
+  "Church Leadership Consultation",
+];
+
+const SCHOOL_SERVICES = [
+  "Teacher Training",
+  "Classroom Behaviour Support",
+  "Autism Inclusion",
+  "ADHD Strategies",
+  "Parent Workshops",
+  "Behaviour Consultation",
+  "Individual Learner Support",
+];
+
+const PROFESSIONAL_SERVICES = [
+  "Clinical Supervision",
+  "Case Consultation",
+  "Behaviour Consultation",
+  "Professional Development Workshops",
+];
+
+// ---------------------------------------------------------------------------
+// SEO target keywords (referenced across page metadata)
+// ---------------------------------------------------------------------------
+
+const SEO_KEYWORDS = [
+  "Online Counselling",
+  "Autism Counselling",
+  "ADHD Support",
+  "Neurodiversity",
+  "Parent Coaching",
+  "Family Therapy",
+  "Behaviour Consultation",
+  "Executive Function Coaching",
 ];

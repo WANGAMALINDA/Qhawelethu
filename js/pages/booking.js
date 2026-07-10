@@ -1,6 +1,6 @@
 // Booking page state (module-level, reset on each render).
 const bookingState = {
-  selectedService: "Child & Adolescent",
+  selectedService: "For Churches",
   selectedDay: 14,
   selectedSlot: "10:30 AM",
 };
@@ -216,13 +216,13 @@ function renderBookingPage() {
           <svg viewBox="0 0 400 400" class="qw-rings" style="left:-7rem; bottom:-7rem; width:360px; height:360px;" aria-hidden="true">
             ${[40,76,112,148,184].map((r,i)=>`<circle cx="200" cy="200" r="${r}" fill="none" stroke="#C98A3A" stroke-width="${i===0?2:1}" opacity="${(0.12-i*0.02).toFixed(2)}"/>`).join("")}
           </svg>
-          <p class="qw-hero-eyebrow">Family &amp; Individual Counselling — Gauteng</p>
+          <p class="qw-hero-eyebrow">Online Counselling Wherever You Are</p>
           <h1 class="qw-display qw-hero-title" style="font-size:36px; margin-bottom:1.25rem;">
             Every family finds its<br class="hide-mobile" /> own rhythm again.
           </h1>
           <p class="qw-hero-sub" style="margin-bottom:2rem;">
-            Book a session with a certified counselor for the support your family needs —
-            in person in Gauteng, or from home over telehealth.
+            Book a session with a certified counselor for the support your family needs — from
+            home, over secure online telehealth, wherever you are in the world.
           </p>
           <div class="qw-hero-cta-row">
             <a href="#intake-form" class="qw-btn-ochre">Book Your Next Session</a>
@@ -238,17 +238,17 @@ function renderBookingPage() {
       <!-- Sidebar -->
       <aside class="qw-aside">
         <div class="qw-side-card sage">
-          <p class="qw-side-eyebrow">Lead counselor</p>
+          <p class="qw-side-eyebrow">Lead counsellor</p>
           <div class="qw-counselor-row" style="margin-bottom:0;">
-            <div class="qw-avatar qw-display">${typeof COUNSELOR_IMAGE !== 'undefined' && COUNSELOR_IMAGE ? `<img src="${COUNSELOR_IMAGE}" alt="Finni Radebe"/>` : 'F'}</div>
+            <div class="qw-avatar qw-display">${typeof COUNSELOR_IMAGE !== 'undefined' && COUNSELOR_IMAGE ? `<img src="${COUNSELOR_IMAGE}" alt="Qhawe Romeo Themba"/>` : 'F'}</div>
             <div>
-              <div class="qw-display qw-counselor-name">Finni Radebe</div>
-              <div class="qw-counselor-role" style="margin-bottom:0.5rem;">Lead Counselor</div>
-              <p class="qw-counselor-bio" style="margin-top:0;">Fifteen years supporting families through trauma, transition, and neurodivergent parenting.</p>
+              <div class="qw-display qw-counselor-name">Qhawe Romeo Themba</div>
+              <div class="qw-counselor-role" style="margin-bottom:0.5rem;">Lead Counsellor | Neurodiversity Specialist</div>
+              <p class="qw-counselor-bio" style="margin-top:0;">Helping neurodivergent children, adolescents, and families thrive through compassionate, evidence-informed psychological support.</p>
             </div>
           </div>
           <div class="qw-badge-row">
-            ${["SACSSP", "HPCSA", "AAMFT"].map((b) => `<span class="qw-badge-pill">${b}</span>`).join("")}
+            ${["Autism (ASD)", "ADHD", "Behaviour Consultation"].map((b) => `<span class="qw-badge-pill">${b}</span>`).join("")}
           </div>
         </div>
 

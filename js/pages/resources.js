@@ -35,10 +35,10 @@ function renderResourcesPage() {
         <section id="articles">
           <p class="qw-eyebrow">Latest from the blog</p>
           <h2 class="qw-display qw-section-title">Recently published</h2>
-          <div class="qw-grid-3">
+          <div class="qw-grid-3-article">
             ${ARTICLES.map(
               (a) => `
-              <div class="qw-article-card">
+              <div class="qw-article-cards">
                 <div class="qw-article-thumb" ${a.image ? `style="background-image:url('${a.image}'); background-size:cover; background-position:center;"` : ''}>
                   ${!a.image ? Icons.bookOpen(22, "var(--moss)") : ''}
                 </div>
