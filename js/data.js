@@ -11,7 +11,7 @@ const NAV_ITEMS = [
 ];
 
 const COUNSELOR_IMAGE = "assets/therapist.jpeg";
-const COUNSELOR_IMAGE2 = "assets/PROFILE 2.jpeg";
+const COUNSELOR_IMAGE2 = "assets/PROFILE 2.jpg";
 // ---------------------------------------------------------------------------
 // Vision, Mission
 // ---------------------------------------------------------------------------

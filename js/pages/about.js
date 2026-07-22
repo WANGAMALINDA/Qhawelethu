@@ -5,7 +5,7 @@ function renderAboutPage() {
       <div>
         <!-- Hero -->
         <section class="qw-hero">
-        <div class="qw-hero-image" style="background-image:url('assets/therapist1.jpg?q=80&amp;w=900&amp;auto=format&amp;fit=crop');"></div>
+        <div class="qw-hero-image" style="background-image:url('assets/PROFILE 3.jpeg?q=80&amp;w=900&amp;auto=format&amp;fit=crop');"></div>
           <p class="qw-hero-eyebrow">Meet Qhawelethu Wellness</p>
           <h1 class="qw-display qw-hero-title" style="font-size:34px; margin-bottom:0.5rem;">Our Heart &amp; Our Story</h1>
           <p class="qw-display" style="position:relative; font-size:18px; margin:0 0 1rem; color: var(--ochre);">
