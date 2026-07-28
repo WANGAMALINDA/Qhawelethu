@@ -1,9 +1,16 @@
 // Booking page state (module-level, reset on each render).
 const bookingState = {
   selectedService: "For Churches",
-  selectedDay: 14,
+  selectedDay: new Date().getDate(),
   selectedSlot: "10:30 AM",
+  viewYear: new Date().getFullYear(),
+  viewMonth: new Date().getMonth(), // 0-indexed
 };
+
+const MONTH_NAMES = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
 
 const TIME_ZONES = [
   "SAST — South Africa (UTC+2)",
@@ -28,13 +35,29 @@ const TIME_ZONES = [
   "PDT — US Pacific (summer)",
 ];
 
-function renderBookingCalendarCells() {
-  const daysInMonth = 31;
-  const firstWeekday = 0; // Sunday
+function renderBookingCalendarCells(year, month) {
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstWeekday = new Date(year, month, 1).getDay(); // 0 = Sunday
   const cells = Array.from({ length: firstWeekday }, () => null).concat(
     Array.from({ length: daysInMonth }, (_, i) => i + 1)
   );
   return cells;
+}
+
+function isPastDate(year, month, day) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const cellDate = new Date(year, month, day);
+  return cellDate < today;
+}
+
+function isToday(year, month, day) {
+  const today = new Date();
+  return (
+    year === today.getFullYear() &&
+    month === today.getMonth() &&
+    day === today.getDate()
+  );
 }
 
 function renderIntakeCheckbox(id, label) {
@@ -56,8 +79,33 @@ function renderIntakeYesNo(id, label) {
     </div>`;
 }
 
+function renderCalendarDays() {
+  const cells = renderBookingCalendarCells(bookingState.viewYear, bookingState.viewMonth);
+  return cells
+    .map((day) => {
+      if (!day) return `<button class="qw-cal-day" disabled></button>`;
+      const past = isPastDate(bookingState.viewYear, bookingState.viewMonth, day);
+      const selected =
+        day === bookingState.selectedDay &&
+        bookingState.viewYear === bookingState.selectedYear &&
+        bookingState.viewMonth === bookingState.selectedMonth;
+      const today = isToday(bookingState.viewYear, bookingState.viewMonth, day);
+      return `
+        <button class="qw-cal-day ${selected ? "selected" : ""} ${today ? "today" : ""}"
+          data-day="${day}"
+          ${past ? "disabled" : ""}>
+          ${day}
+        </button>`;
+    })
+    .join("");
+}
+
 function renderIntakeForm() {
-  const cells = renderBookingCalendarCells();
+  // Initialize selected date to today on first render.
+  if (bookingState.selectedYear === undefined) {
+    bookingState.selectedYear = bookingState.viewYear;
+    bookingState.selectedMonth = bookingState.viewMonth;
+  }
 
   return `
     <section id="intake-form" class="qw-booking-form-card" style="margin-top: 3.5rem;">
@@ -82,25 +130,17 @@ function renderIntakeForm() {
         <!-- Calendar -->
         <div>
           <div class="qw-cal-header">
-            <span class="qw-cal-month">January 2027</span>
+            <span class="qw-cal-month" id="qw-cal-month-label">${MONTH_NAMES[bookingState.viewMonth]} ${bookingState.viewYear}</span>
             <div class="qw-cal-nav">
-              <button class="qw-cal-nav-btn" aria-label="Previous month">${Icons.chevronLeft(14)}</button>
-              <button class="qw-cal-nav-btn" aria-label="Next month">${Icons.chevronRight(14)}</button>
+              <button class="qw-cal-nav-btn" id="qw-cal-prev" aria-label="Previous month">${Icons.chevronLeft(14)}</button>
+              <button class="qw-cal-nav-btn" id="qw-cal-next" aria-label="Next month">${Icons.chevronRight(14)}</button>
             </div>
           </div>
           <div class="qw-cal-weekdays">
             ${["S","M","T","W","T","F","S"].map((d) => `<div>${d}</div>`).join("")}
           </div>
           <div class="qw-cal-days" id="qw-cal-days">
-            ${cells
-              .map(
-                (day) => `
-              <button class="qw-cal-day ${day === bookingState.selectedDay ? "selected" : ""}"
-                ${day ? `data-day="${day}"` : "disabled"}>
-                ${day || ""}
-              </button>`
-              )
-              .join("")}
+            ${renderCalendarDays()}
           </div>
         </div>
 
@@ -108,7 +148,7 @@ function renderIntakeForm() {
 
         <!-- Time slots -->
         <div>
-          <div class="qw-slots-label" id="qw-slots-label">Available slots — Jan ${bookingState.selectedDay}</div>
+          <div class="qw-slots-label" id="qw-slots-label">Available slots — ${MONTH_NAMES[bookingState.selectedMonth]} ${bookingState.selectedDay}</div>
           <div class="qw-slots-wrap" id="qw-slots-wrap">
             ${TIME_SLOTS.map((t) => renderSlotPill(t)).join("")}
           </div>
@@ -288,7 +328,7 @@ function renderSlotPill(t) {
 function renderBookingSteps() {
   const steps = [
     { n: 1, label: "Service", value: bookingState.selectedService },
-    { n: 2, label: "Date & time", value: `Jan ${bookingState.selectedDay} · ${bookingState.selectedSlot}` },
+    { n: 2, label: "Date & time", value: `${MONTH_NAMES[bookingState.selectedMonth ?? bookingState.viewMonth].slice(0,3)} ${bookingState.selectedDay} · ${bookingState.selectedSlot}` },
     { n: 3, label: "Your details", value: "Complete the form below" },
   ];
   return steps
@@ -314,12 +354,20 @@ function renderBookingSteps() {
 function wireBookingPage(root) {
   const servicesWrap = root.querySelector("#qw-booking-services");
   const calDays = root.querySelector("#qw-cal-days");
+  const calMonthLabel = root.querySelector("#qw-cal-month-label");
+  const calPrevBtn = root.querySelector("#qw-cal-prev");
+  const calNextBtn = root.querySelector("#qw-cal-next");
   const slotsWrap = root.querySelector("#qw-slots-wrap");
   const slotsLabel = root.querySelector("#qw-slots-label");
   const stepsWrap = root.querySelector("#qw-booking-steps");
 
   function refreshSteps() {
     stepsWrap.innerHTML = renderBookingSteps();
+  }
+
+  function refreshCalendar() {
+    calMonthLabel.textContent = `${MONTH_NAMES[bookingState.viewMonth]} ${bookingState.viewYear}`;
+    calDays.innerHTML = renderCalendarDays();
   }
 
   if (servicesWrap) {
@@ -332,14 +380,38 @@ function wireBookingPage(root) {
     });
   }
 
+  if (calPrevBtn) {
+    calPrevBtn.addEventListener("click", () => {
+      bookingState.viewMonth -= 1;
+      if (bookingState.viewMonth < 0) {
+        bookingState.viewMonth = 11;
+        bookingState.viewYear -= 1;
+      }
+      refreshCalendar();
+    });
+  }
+
+  if (calNextBtn) {
+    calNextBtn.addEventListener("click", () => {
+      bookingState.viewMonth += 1;
+      if (bookingState.viewMonth > 11) {
+        bookingState.viewMonth = 0;
+        bookingState.viewYear += 1;
+      }
+      refreshCalendar();
+    });
+  }
+
   if (calDays) {
     calDays.addEventListener("click", (e) => {
       const btn = e.target.closest("[data-day]");
-      if (!btn) return;
+      if (!btn || btn.disabled) return;
       bookingState.selectedDay = Number(btn.getAttribute("data-day"));
+      bookingState.selectedYear = bookingState.viewYear;
+      bookingState.selectedMonth = bookingState.viewMonth;
       calDays.querySelectorAll(".qw-cal-day").forEach((el) => el.classList.remove("selected"));
       btn.classList.add("selected");
-      slotsLabel.textContent = `Available slots — Jan ${bookingState.selectedDay}`;
+      slotsLabel.textContent = `Available slots — ${MONTH_NAMES[bookingState.selectedMonth].slice(0,3)} ${bookingState.selectedDay}`;
       refreshSteps();
     });
   }
@@ -405,9 +477,12 @@ function wireIntakeForm(root) {
       "Full intake form submitted — see intake_forms record for details.",
     ].filter(Boolean).join("\n");
 
+    const bookingYear = bookingState.selectedYear ?? bookingState.viewYear;
+    const bookingMonth = bookingState.selectedMonth ?? bookingState.viewMonth;
+
     const bookingPayload = {
       service: bookingState.selectedService,
-      booking_date: `2027-01-${String(bookingState.selectedDay).padStart(2, "0")}`,
+      booking_date: `${bookingYear}-${String(bookingMonth + 1).padStart(2, "0")}-${String(bookingState.selectedDay).padStart(2, "0")}`,
       time_slot: bookingState.selectedSlot,
       full_name: fullName,
       phone: mobile,
