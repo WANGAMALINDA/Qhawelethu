@@ -4,8 +4,8 @@
 // so booking.js and contact.js can insert directly into the database.
 // ---------------------------------------------------------------------------
 
-const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.REACT_APP_SUPABASE_ANON_KEY;
+const SUPABASE_URL = "https://guerbgchojefhgljyake.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_42zYBuYrbTwDxTVm_1TvaA_uaId6Bi1";
 
 let supabaseClient = null;
 
