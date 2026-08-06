@@ -1,0 +1,17 @@
+# Qhawelethu Wellness Counselling
+
+Website: https://qhawelethuwc.co.za
+Primary focus: Neurodiversity-affirming online counselling for children, adults, couples, families, schools, churches, and professionals.
+
+## Important pages
+- Home: https://qhawelethuwc.co.za/
+- About: https://qhawelethuwc.co.za/#/about
+- Services: https://qhawelethuwc.co.za/#/services
+- Pricing: https://qhawelethuwc.co.za/#/pricing
+- Resources: https://qhawelethuwc.co.za/#/resources
+- FAQ: https://qhawelethuwc.co.za/#/faq
+- Booking: https://qhawelethuwc.co.za/#/booking
+- Contact: https://qhawelethuwc.co.za/#/contact
+
+## Contact
+Use the contact page for official enquiries: https://qhawelethuwc.co.za/#/contact
