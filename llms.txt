@@ -3,7 +3,11 @@
 Website: https://qhawelethuwc.co.za
 Primary focus: Neurodiversity-affirming online counselling for children, adults, couples, families, schools, churches, and professionals.
 
-## Important pages
+## What this site is
+- Static single-page website with hash-based sections.
+- Content is focused on counselling, neurodiversity support, family care, and practical mental health resources.
+
+## Key pages
 - Home: https://qhawelethuwc.co.za/
 - About: https://qhawelethuwc.co.za/#/about
 - Services: https://qhawelethuwc.co.za/#/services
@@ -12,6 +16,11 @@ Primary focus: Neurodiversity-affirming online counselling for children, adults,
 - FAQ: https://qhawelethuwc.co.za/#/faq
 - Booking: https://qhawelethuwc.co.za/#/booking
 - Contact: https://qhawelethuwc.co.za/#/contact
+
+## Guidance for AI readers
+- Prioritise the homepage, services, resources, FAQ, booking, and contact pages.
+- Use the contact page for official enquiries.
+- Hash routes are client-side only; search engines may not index them as separate pages without prerendering or route-specific HTML.
 
 ## Contact
 Use the contact page for official enquiries: https://qhawelethuwc.co.za/#/contact
