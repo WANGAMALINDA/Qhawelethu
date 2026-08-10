@@ -4,12 +4,27 @@
 // so booking.js and contact.js can insert directly into the database.
 // ---------------------------------------------------------------------------
 
-const SUPABASE_URL = "https://guerbgchojefhgljyake.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_42zYBuYrbTwDxTVm_1TvaA_uaId6Bi1";
+// ⚠️ SECURITY: Do not hardcode credentials here.
+// Load from environment variables or a secure backend endpoint.
+// For development, use a .env file (git-ignored) with:
+//   VITE_SUPABASE_URL=your_url
+//   VITE_SUPABASE_ANON_KEY=your_key
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
 
 let supabaseClient = null;
 
 function initSupabaseClient() {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    console.error(
+      "[Supabase] Missing configuration. Ensure environment variables are set:\n" +
+      "  VITE_SUPABASE_URL\n" +
+      "  VITE_SUPABASE_ANON_KEY"
+    );
+    return null;
+  }
+
   if (typeof supabase === "undefined") {
     console.error(
       "[Supabase] SDK not found on window. Make sure the Supabase CDN script " +
@@ -27,7 +42,7 @@ function initSupabaseClient() {
         autoRefreshToken: true,
       },
     });
-    console.log("[Supabase] Client connected:", SUPABASE_URL);
+    console.log("[Supabase] Client connected");
     return client;
   } catch (err) {
     console.error("[Supabase] Failed to create client:", err);
