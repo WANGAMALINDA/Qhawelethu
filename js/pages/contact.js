@@ -107,23 +107,38 @@ function wireContactPage(root) {
     }
 
     btn.innerHTML = "Sending...";
-    const result = await window.nySupabase?.sendEnquiryMessage(payload);
 
-    if (result?.error) {
-      console.error("Inquiry save failed:", result.error);
+    try {
+      const resp = await fetch('/api/enquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const result = await resp.json().catch(() => null);
+
+      if (!resp.ok) {
+        console.error('Inquiry save failed:', result);
+        btn.innerHTML = "Try again";
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.innerHTML = original;
+        }, 2200);
+        return;
+      }
+
+      btn.innerHTML = "Sent ✓";
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = original;
+        form.reset();
+      }, 1800);
+    } catch (err) {
+      console.error('Network error saving inquiry:', err);
       btn.innerHTML = "Try again";
       setTimeout(() => {
         btn.disabled = false;
         btn.innerHTML = original;
       }, 2200);
-      return;
     }
-
-    btn.innerHTML = "Sent ✓";
-    setTimeout(() => {
-      btn.disabled = false;
-      btn.innerHTML = original;
-      form.reset();
-    }, 1800);
   });
 }
