@@ -93,31 +93,21 @@ async function sendEnquiryMessage(payload) {
   if (!client) {
     return { error: { message: "Database connection unavailable. Please refresh and try again." } };
   }
-  // No .select() here on purpose: the anon role is only granted INSERT on
-  // this table, not SELECT. Chaining .select() makes PostgREST try to read
-  // the row back after inserting it, which RLS blocks for anon  and that
-  // gets reported as a false "row violates row-level security policy" error
-  // even though the insert itself succeeded.
+  // Insert without SELECT so anon role (INSERT-only) works with RLS
   const { error } = await client.from("enquiries").insert([payload]);
   if (error) console.error("[Supabase] sendEnquiryMessage error:", error);
   return { error };
 }
 
+// bookings should behave like enquiry forms: simple INSERT of payload
 async function sendBookingRequest(payload) {
   const client = getClient();
   if (!client) {
     return { error: { message: "Database connection unavailable. Please refresh and try again." } };
   }
-  // Same reasoning as sendEnquiryMessage — no .select() after insert, since
-  // anon only has INSERT privileges on this table. Because we can't read the
-  // row back, we generate the id client-side and send it in the payload, so
-  // callers (e.g. booking.js) still know the row's id for linking purposes.
-  const id = (typeof crypto !== "undefined" && crypto.randomUUID)
-    ? crypto.randomUUID()
-    : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-  const { error } = await client.from("bookings").insert([{ id, ...payload }]);
+  const { error } = await client.from("bookings").insert([payload]);
   if (error) console.error("[Supabase] sendBookingRequest error:", error);
-  return { error, data: { id } };
+  return { error };
 }
 
 async function sendIntakeForm(payload) {
@@ -125,8 +115,7 @@ async function sendIntakeForm(payload) {
   if (!client) {
     return { error: { message: "Database connection unavailable. Please refresh and try again." } };
   }
-  // Same reasoning as sendEnquiryMessage — no .select() after insert, since
-  // anon only has INSERT privileges on this table.
+  // Insert without SELECT so anon role (INSERT-only) works with RLS
   const { error } = await client.from("intake_forms").insert([payload]);
   if (error) console.error("[Supabase] sendIntakeForm error:", error);
   return { error };
