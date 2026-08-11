@@ -1,8 +1,10 @@
 // Robust environment detection for Vite (import.meta.env), runtime (window.__ENV), and Node/SSR (process.env)
 let envFromImportMeta = {};
 try {
-  // import.meta may not be available in some runtimes; guard access
-  envFromImportMeta = (typeof import !== "undefined" && typeof import.meta !== "undefined" && import.meta.env) ? import.meta.env : {};
+  // import.meta is only available in module contexts. Access it inside try so failing environments fall back cleanly.
+  // Using import.meta directly inside try avoids the problematic `typeof import` check which can cause
+  // SyntaxError in some parsers/environments.
+  envFromImportMeta = (import.meta && import.meta.env) ? import.meta.env : {};
 } catch (e) {
   envFromImportMeta = {};
 }
