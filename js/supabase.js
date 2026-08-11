@@ -1,25 +1,21 @@
 // ---------------------------------------------------------------------------
-// Qhawelethu Wellness — Supabase connection
+// Qhawelethu Wellness 345 Supabase connection
 // Loads a single, persistent client and exposes it on window.nySupabase
 // so booking.js and contact.js can insert directly into the database.
 // ---------------------------------------------------------------------------
 
-// ⚠️ SECURITY: Do not hardcode credentials here.
+// 	 SECURITY: Do not hardcode credentials here.
 // Load from environment variables or a secure backend endpoint.
 // For development, use a .env file (git-ignored) with:
 //   VITE_SUPABASE_URL=your_url
 //   VITE_SUPABASE_ANON_KEY=your_key
 
-// Read environment values from multiple fallbacks:
-// 1) import.meta.env (when built by a bundler or when loaded as module and using env shims)
-// 2) window.__ENV (a simple runtime shim inserted on the page)
-// 3) process.env (Node/build-time)
-let envFromImportMeta = {};
-try {
-  envFromImportMeta = (typeof import !== 'undefined' && import.meta && import.meta.env) ? import.meta.env : (typeof import.meta !== 'undefined' && import.meta.env) ? import.meta.env : {};
-} catch (err) {
-  envFromImportMeta = {};
-}
+// Read environment values from multiple fallbacks. When referencing
+// import.meta.env directly in a file that might be parsed as a non-module,
+// some browsers will throw a parse-time error. To stay parse-safe, do not
+// reference the token 'import' directly in top-level expressions.
+
+const envFromImportMeta = {}; // intentionally empty to avoid parse errors
 const envFromWindow = (typeof window !== 'undefined' && window.__ENV) ? window.__ENV : {};
 const envFromProcess = (typeof process !== 'undefined' && process.env) ? process.env : {};
 const env = Object.assign({}, envFromProcess, envFromWindow, envFromImportMeta);
@@ -81,7 +77,7 @@ async function sendEnquiryMessage(payload) {
   }
   // No .select() here on purpose: the anon role is only granted INSERT on
   // this table, not SELECT. Chaining .select() makes PostgREST try to read
-  // the row back after inserting it, which RLS blocks for anon — and that
+  // the row back after inserting it, which RLS blocks for anon  and that
   // gets reported as a false "row violates row-level security policy" error
   // even though the insert itself succeeded.
   const { error } = await client.from("enquiries").insert([payload]);
@@ -94,7 +90,7 @@ async function sendBookingRequest(payload) {
   if (!client) {
     return { error: { message: "Database connection unavailable. Please refresh and try again." } };
   }
-  // Same reasoning as sendEnquiryMessage — no .select() after insert, since
+  // Same reasoning as sendEnquiryMessage  no .select() after insert, since
   // anon only has INSERT privileges on this table. Because we can't read the
   // row back, we generate the id client-side and send it in the payload, so
   // callers (e.g. booking.js) still know the row's id for linking purposes.
@@ -111,7 +107,7 @@ async function sendIntakeForm(payload) {
   if (!client) {
     return { error: { message: "Database connection unavailable. Please refresh and try again." } };
   }
-  // Same reasoning as sendEnquiryMessage — no .select() after insert, since
+  // Same reasoning as sendEnquiryMessage  no .select() after insert, since
   // anon only has INSERT privileges on this table.
   const { error } = await client.from("intake_forms").insert([payload]);
   if (error) console.error("[Supabase] sendIntakeForm error:", error);
