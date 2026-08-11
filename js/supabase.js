@@ -38,7 +38,7 @@ async function initSupabaseClient() {
     console.error(
       "[Supabase] Missing configuration. Ensure environment variables are set:\n" +
       "  VITE_SUPABASE_URL\n" +
-      "  VITE_SUPABASE_ANON_KEY"
+      "  SUPABASE_SERVICE_KEY"
     );
     console.debug('[Supabase] Computed env:', { SUPABASE_URL, SUPABASE_ANON_KEY, rawEnv: envFromImportMeta || envFromWindow || envFromProcess });
     return null;
