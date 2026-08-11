@@ -13,7 +13,7 @@ const envFromProcess = (typeof process !== 'undefined' && process.env) ? process
 const env = Object.assign({}, envFromImportMeta, envFromWindow, envFromProcess);
 
 const SUPABASE_URL = env.VITE_SUPABASE_URL || env.SUPABASE_URL || '';
-const SUPABASE_ANON_KEY = env.VITE_SUPABASE_ANON_KEY || env.SUPABASE_ANON_KEY || '';
+const SUPABASE_ANON_KEY = env.VITE_SUPABASE_ANON_KEY || env.SUPABASE_SERVICE_KEY || '';
 
 let supabaseClient = null;
 let supabaseLib = (typeof supabase !== 'undefined') ? supabase : null; // may be global from CDN
