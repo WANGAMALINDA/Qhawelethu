@@ -1,19 +1,4 @@
-// ---------------------------------------------------------------------------
-// Qhawelethu Wellness 345 Supabase connection
-// Loads a single, persistent client and exposes it on window.nySupabase
-// so booking.js and contact.js can insert directly into the database.
-// ---------------------------------------------------------------------------
 
-// 	 SECURITY: Do not hardcode credentials here.
-// Load from environment variables or a secure backend endpoint.
-// For development, use a .env file (git-ignored) with:
-//   VITE_SUPABASE_URL=your_url
-//   VITE_SUPABASE_ANON_KEY=your_key
-
-// Read environment values from multiple fallbacks. When referencing
-// import.meta.env directly in a file that might be parsed as a non-module,
-// some browsers will throw a parse-time error. To stay parse-safe, do not
-// reference the token 'import' directly in top-level expressions.
 
 const envFromImportMeta = {}; // intentionally empty to avoid parse errors
 const envFromWindow = (typeof window !== 'undefined' && window.__ENV) ? window.__ENV : {};
