@@ -34,7 +34,7 @@ async function ensureSupabaseLib() {
 }
 
 async function initSupabaseClient() {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
     console.error(
       "[Supabase] Missing configuration. Ensure environment variables are set:\n" +
       "  VITE_SUPABASE_URL\n" +
