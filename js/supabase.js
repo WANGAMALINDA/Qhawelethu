@@ -10,8 +10,22 @@
 //   VITE_SUPABASE_URL=your_url
 //   VITE_SUPABASE_ANON_KEY=your_key
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
+// Read environment values from multiple fallbacks:
+// 1) import.meta.env (when built by a bundler or when loaded as module and using env shims)
+// 2) window.__ENV (a simple runtime shim inserted on the page)
+// 3) process.env (Node/build-time)
+let envFromImportMeta = {};
+try {
+  envFromImportMeta = (typeof import !== 'undefined' && import.meta && import.meta.env) ? import.meta.env : (typeof import.meta !== 'undefined' && import.meta.env) ? import.meta.env : {};
+} catch (err) {
+  envFromImportMeta = {};
+}
+const envFromWindow = (typeof window !== 'undefined' && window.__ENV) ? window.__ENV : {};
+const envFromProcess = (typeof process !== 'undefined' && process.env) ? process.env : {};
+const env = Object.assign({}, envFromProcess, envFromWindow, envFromImportMeta);
+
+const SUPABASE_URL = env.VITE_SUPABASE_URL || env.SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = env.VITE_SUPABASE_ANON_KEY || env.SUPABASE_ANON_KEY || '';
 
 let supabaseClient = null;
 
@@ -30,7 +44,7 @@ function initSupabaseClient() {
       "[Supabase] SDK not found on window. Make sure the Supabase CDN script " +
       "is included BEFORE supabase.js, e.g.:\n" +
       '<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>\n' +
-      '<script src="supabase.js"></script>'
+      '<script src="/js/supabase.js" type="module"></script>'
     );
     return null;
   }
