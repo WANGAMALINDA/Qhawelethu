@@ -49,6 +49,14 @@
   <script src="/js/icons.js"></script>
   <script src="/js/data.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+  <!-- Static site, no build step: env vars aren't injected automatically, so we set them here.
+       The anon key is safe to expose — it's public by design and relies on RLS for access control. -->
+  <script>
+    window.__ENV = {
+      VITE_SUPABASE_URL: "https://YOUR-PROJECT-REF.supabase.co",
+      VITE_SUPABASE_ANON_KEY: "YOUR-ANON-PUBLIC-KEY"
+    };
+  </script>
   <script type="module" src="/js/supabase.js"></script>
   <script src="/js/components.js"></script>
   <script src="/js/pages/home.js"></script>
