@@ -1,4 +1,7 @@
-// Robust environment detection for Vite (import.meta.env), runtime (window.__ENV), and Node/SSR (process.env)
+// Environment detection for Vite (import.meta.env, build-time) and runtime (window.__ENV,
+// for static/non-build deploys that inject config via a small inline <script> before this file).
+// process.env is NOT used here: it doesn't exist in the browser, so it can never supply real
+// values client-side and was previously giving a false sense of a working fallback.
 let envFromImportMeta = {};
 try {
   // import.meta is only available in module contexts. Access it inside try so failing environments fall back cleanly.
@@ -9,11 +12,12 @@ try {
   envFromImportMeta = {};
 }
 const envFromWindow = (typeof window !== 'undefined' && window.__ENV) ? window.__ENV : {};
-const envFromProcess = (typeof process !== 'undefined' && process.env) ? process.env : {};
-const env = Object.assign({}, envFromImportMeta, envFromWindow, envFromProcess);
+const env = Object.assign({}, envFromImportMeta, envFromWindow);
 
-const SUPABASE_URL = env.VITE_SUPABASE_URL || env.SUPABASE_URL || '';
-const SUPABASE_ANON_KEY = env.VITE_SUPABASE_ANON_KEY || env.SUPABASE_SERVICE_KEY || '';
+const SUPABASE_URL = env.VITE_SUPABASE_URL || '';
+// IMPORTANT: only ever read the anon/public key here. The service_role key bypasses Row Level
+// Security and must never be shipped to the browser — do not add a SUPABASE_SERVICE_KEY fallback.
+const SUPABASE_ANON_KEY = env.VITE_SUPABASE_ANON_KEY || '';
 
 let supabaseClient = null;
 let supabaseLib = (typeof supabase !== 'undefined') ? supabase : null; // may be global from CDN
@@ -40,7 +44,7 @@ async function initSupabaseClient() {
       "  VITE_SUPABASE_URL\n" +
       "  VITE_SUPABASE_ANON_KEY"
     );
-    console.debug('[Supabase] Computed env:', { SUPABASE_URL, SUPABASE_ANON_KEY, rawEnv: envFromImportMeta || envFromWindow || envFromProcess });
+    console.debug('[Supabase] Computed env:', { SUPABASE_URL, SUPABASE_ANON_KEY, rawEnv: envFromImportMeta || envFromWindow });
     return null;
   }
 
