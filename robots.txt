@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://qhawelethuwc.co.za/sitemap.xml

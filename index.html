@@ -3,8 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <base href="/" />
   <title>Qhawelethu Wellness Counselling | Neurodiversity-Affirming Online Counselling</title>
-  <meta name="description" content="Neurodiversity-affirming online counselling for children, couples, individuals, and families. Autism counselling, ADHD support, parent coaching, and family therapy — available worldwide." />
+  <meta name="description" content="Neurodiversity-affirming online counselling for children, couples, individuals, and families. Autism counselling, ADHD support, parent coaching, and family thera[...]" />
+  <meta name="keywords" content="online neurodiversity affirming counselling, therapy, qhawelethu, qhawelethuwc, qhawelethu wellness councelling, virtual neurodivergent therapy, global ADHD counsel[...]" />
+  
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+  <meta name="author" content="Qhawelethu Wellness Counselling" />
+  <meta name="theme-color" content="#1E3D3B" />
+  <link rel="canonical" href="https://qhawelethuwc.co.za/" />
 
   <!-- Favicon (shows in browser tabs and often in Google search results) -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -24,28 +31,59 @@
   <meta name="twitter:description" content="Neurodiversity-affirming online counselling for children, couples, individuals, and families." />
   <meta name="twitter:image" content="https://qhawelethuwc.co.za/assets/qhawelethu-logo.jpg" />
 
-  <link rel="stylesheet" href="css/styles.css" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Qhawelethu Wellness Counselling",
+      "url": "https://qhawelethuwc.co.za/",
+      "logo": "https://qhawelethuwc.co.za/assets/qhawelethu-logo.jpg"
+    }
+  </script>
+
+  <link rel="stylesheet" href="/css/styles.css" />
 </head>
 <body>
   <div id="app" class="qw-root"></div>
 
-  <script src="js/icons.js"></script>
-  <script src="js/data.js"></script>
+  <script src="/js/icons.js"></script>
+  <script src="/js/data.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
-  <script src="js/supabase.js"></script>
-  <script src="js/components.js"></script>
-  <script src="js/cookies.js"></script>
-  <script src="js/pages/home.js"></script>
-  <script src="js/pages/about.js"></script>
-  <script src="js/pages/services.js"></script>
-  <script src="js/pages/pricing.js"></script>
-  <script src="js/pages/resources.js"></script>
-  <script src="js/pages/faq.js"></script>
-  <script src="js/pages/churches.js"></script>
-  <script src="js/pages/schools.js"></script>
-  <script src="js/pages/professionals.js"></script>
-  <script src="js/pages/booking.js"></script>
-  <script src="js/pages/contact.js"></script>
-  <script src="js/app.js"></script>
+  <!-- Static site, no build step: env vars aren't injected automatically, so we set them here.
+       The anon key is safe to expose — it's public by design and relies on RLS for access control. -->
+  <script>
+    window.__ENV = {
+      VITE_SUPABASE_URL: "https://guerbgchojefhgljyake.supabase.co",
+      VITE_SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1ZXJiZ2Nob2plZmhnbGp5YWtlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzMDgzNzksImV4cCI6MjA5NDg4NDM3OX0.EgF2RJPRJVBuBS-5xDVHV-E8T8yL8w4vGlmBd_VIEZU"
+    };
+  </script>
+  <script type="module" src="/js/supabase.js"></script>
+  <script src="/js/components.js"></script>
+  <script src="/js/cookies.js"></script>
+  <script src="/js/pages/home.js"></script>
+  <script src="/js/pages/about.js"></script>
+  <script src="/js/pages/services.js"></script>
+  <script src="/js/pages/pricing.js"></script>
+  <script src="/js/pages/resources.js"></script>
+  <script src="/js/pages/faq.js"></script>
+  <script src="/js/pages/churches.js"></script>
+  <script src="/js/pages/schools.js"></script>
+  <script src="/js/pages/professionals.js"></script>
+  <script src="/js/pages/booking.js"></script>
+  <script src="/js/pages/contact.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/components.js"></script>
+  <script src="/js/pages/home.js"></script>
+  <script src="/js/pages/about.js"></script>
+  <script src="/js/pages/services.js"></script>
+  <script src="/js/pages/pricing.js"></script>
+  <script src="/js/pages/resources.js"></script>
+  <script src="/js/pages/faq.js"></script>
+  <script src="/js/pages/churches.js"></script>
+  <script src="/js/pages/schools.js"></script>
+  <script src="/js/pages/professionals.js"></script>
+  <script src="/js/pages/booking.js"></script>
+  <script src="/js/pages/contact.js"></script>
+  <script src="/js/app.js"></script>
 </body>
 </html>

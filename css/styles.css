@@ -630,6 +630,33 @@ img, svg { display: block; }
   box-shadow: 0 12px 24px rgba(30, 61, 59, 0.12);
   border-color: rgba(75, 114, 103, 0.25);
 }
+.qw-search-panel {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border: 1px solid var(--sage);
+  border-radius: 1rem;
+  background: linear-gradient(180deg, rgba(220, 230, 222, 0.72), rgba(252, 250, 245, 0.96));
+}
+.qw-search-copy {
+  margin: 0 0 1rem;
+  max-width: 40rem;
+  color: var(--charcoal);
+  opacity: 0.8;
+  line-height: 1.6;
+}
+.qw-search-form {
+  display: grid;
+  gap: 0.85rem;
+}
+.qw-search-input {
+  min-height: 3rem;
+  background: rgba(252, 250, 245, 0.85);
+}
+.qw-search-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
 .qw-article-cards{
     border-radius: 0.75rem;
   overflow: hidden;

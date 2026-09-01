@@ -18,6 +18,22 @@ function renderResourcesPage() {
           </p>
         </section>
 
+        <section class="qw-search-panel">
+          <p class="qw-eyebrow">Internet keyword search</p>
+          <h2 class="qw-display qw-section-title" style="margin-bottom:0.75rem;">Search the web for a topic</h2>
+          <p class="qw-search-copy">
+            Use Google to search the wider web or limit the search to this site only.
+          </p>
+          <form id="qw-web-search-form" class="qw-search-form">
+            <label class="sr-only" for="qw-search-query">Search term</label>
+            <input id="qw-search-query" class="qw-input qw-search-input" name="query" placeholder="Try: sensory processing, autism support, parent coaching" />
+            <div class="qw-search-actions">
+              <button type="submit" class="qw-btn-primary">Search the web</button>
+              <button type="button" class="qw-btn-outline" id="qw-site-search">Search this site</button>
+            </div>
+          </form>
+        </section>
+
         <!-- Category cards -->
         <section class="qw-grid-2" style="margin-bottom: 3.5rem;">
           ${CATEGORIES.map(
@@ -83,4 +99,32 @@ function renderResourcesPage() {
     </main>
     ${renderFooter()}
   `;
+}
+
+function buildSearchUrl(query, siteOnly = false) {
+  const sanitized = query.trim().replace(/\s+/g, " ");
+  const searchTerm = siteOnly ? `site:qhawelethuwc.co.za ${sanitized}` : sanitized;
+  return `https://www.google.com/search?q=${encodeURIComponent(searchTerm)}`;
+}
+
+function wireResourcesPage(root) {
+  const form = root.querySelector("#qw-web-search-form");
+  const siteSearchButton = root.querySelector("#qw-site-search");
+  const input = root.querySelector("#qw-search-query");
+
+  const submitSearch = (siteOnly) => {
+    const query = input?.value || "";
+    if (!query.trim()) {
+      input?.focus();
+      return;
+    }
+    window.open(buildSearchUrl(query, siteOnly), "_blank", "noopener,noreferrer");
+  };
+
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    submitSearch(false);
+  });
+
+  siteSearchButton?.addEventListener("click", () => submitSearch(true));
 }
