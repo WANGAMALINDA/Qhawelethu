@@ -32,8 +32,17 @@ function navigateTo(pageId) {
 
 function renderPage(pageId) {
   const page = PAGES[pageId] || PAGES.home;
-  appRoot.innerHTML = page.render();
+  const pageHTML = page.render();
+  // Insert breadcrumbs after navbar by finding the closing header tag
+  const navBarEnd = pageHTML.indexOf('</header>') + '</header>'.length;
+  const breadcrumbsHTML = renderBreadcrumbs(pageId);
+  const cookiesBannerHTML = renderCookieBanner();
+  
+  appRoot.innerHTML = pageHTML.slice(0, navBarEnd) + breadcrumbsHTML + pageHTML.slice(navBarEnd) + cookiesBannerHTML;
+  
   wireNavBar(appRoot);
+  wireBreadcrumbs(appRoot);
+  wireCookieBanner(appRoot);
   if (page.wire) page.wire(appRoot);
   window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
   document.title = pageTitleFor(pageId);
